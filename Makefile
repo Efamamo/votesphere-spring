@@ -8,13 +8,10 @@ build:
 	@mvn clean package
 	@echo "Build completed successfully."
 
-# Run the application
-run: build
-ifeq ($(JAR_NAME),)
-	@echo "Error: No JAR file found. Ensure the project builds successfully."
-else
-	@java -jar $(JAR_NAME)
-endif
+# Run the application using Maven
+run:
+	@mvn spring-boot:run
+	@echo "Application is running..."
 
 # Run tests
 test:
