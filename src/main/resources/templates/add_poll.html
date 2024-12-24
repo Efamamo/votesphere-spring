@@ -29,7 +29,7 @@
               type="text"
               name="choice1"
             />
-            <p class="question-error text-sm text-red-600"></p>
+            <p class="choice1-error text-sm text-red-600"></p>
           </div>
 
           <div class="flex flex-col gap-1 mb-2">
@@ -39,7 +39,7 @@
               type="text"
               name="choice2"
             />
-            <p class="question-error text-sm text-red-600"></p>
+            <p class="choice2-error text-sm text-red-600"></p>
           </div>
 
           <div class="flex flex-col gap-1 mb-2">
@@ -49,7 +49,7 @@
               type="text"
               name="choice3"
             />
-            <p class="question-error text-sm text-red-600"></p>
+            <p class="choice3-error text-sm text-red-600"></p>
           </div>
           <div class="flex flex-col gap-1 mb-2">
             <label>Choice 4</label>
@@ -58,7 +58,7 @@
               type="text"
               name="choice4"
             />
-            <p class="question-error text-sm text-red-600"></p>
+            <p class="choice4-error text-sm text-red-600"></p>
           </div>
           <div class="flex flex-col gap-1 mb-2">
             <label>Choice 5</label>
@@ -67,7 +67,7 @@
               type="text"
               name="choice5"
             />
-            <p class="question-error text-sm text-red-600"></p>
+            <p class="choice5-error text-sm text-red-600"></p>
           </div>
 
           <button
@@ -81,8 +81,13 @@
 
     <script>
       const pollForm = document.querySelector('form');
+      const questionError = document.querySelector('.question-error');
+      const choice5Error = document.querySelector('.choice5-error');
+
       pollForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        questionError.textContent = '';
+        choice5Error.textContent = '';
         const formData = new FormData(pollForm);
         const question = formData.get('question');
         const choice1 = formData.get('choice1');
@@ -91,12 +96,31 @@
         const choice4 = formData.get('choice4');
         const choice5 = formData.get('choice5');
 
-        console.log(question);
-        console.log(choice1);
-        console.log(choice2);
-        console.log(choice3);
-        console.log(choice4);
-        console.log(choice5);
+        const response = await fetch('/polls', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            question,
+            choices: [choice1, choice2, choice3, choice4, choice5],
+          }),
+        });
+
+        const data = await response.json();
+
+        if (response.status == 400) {
+          if (data['question']) {
+            questionError.textContent = data['question'];
+          }
+
+          if (data['choices']) {
+            choice5Error.textContent = data['choices'];
+          }
+        }
+
+        if (response.status == 201) {
+          window.location.href = '/polls';
+        }
+        console.log(data);
       });
     </script>
   </body>

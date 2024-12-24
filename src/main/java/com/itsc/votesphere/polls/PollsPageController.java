@@ -8,13 +8,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/polls")
-public class PollController {
+public class PollsPageController {
 
     @Autowired
     private PollRepository pollRepository;
 
     @GetMapping("")
     public String getPolls(Model model) {
+        Object polls = pollRepository.findAll();
+        System.out.println(polls);
         model.addAttribute("polls", pollRepository.findAll());
         return "polls";
     }
