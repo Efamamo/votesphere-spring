@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="fragments/head :: head"></head>
+
+  <body>
+    <div
+      class="max-w-xl mx-auto px-12 py-4 border boder-gray-200 rounded-lg mt-10 md:mt-40"
+    >
+      <h1 class="text-2xl font-bold text-center">Login</h1>
+      <h3 class="text-center mt-1 mb-4">Enter Credentials and Log in</h3>
+
+      <form>
+        <div class="flex flex-col gap-1 mb-4">
+          <label>Username</label>
+          <input
+            class="border border-gray-300 py-1 px-2 focus:outline-none"
+            type="text"
+            name="username"
+          />
+
+          <p class="user-error text-sm text-red-600"></p>
+        </div>
+
+        <div class="flex flex-col gap-1 mb-8">
+          <label>Password</label>
+          <input
+            class="border border-gray-300 py-1 px-2 focus:outline-none"
+            type="password"
+            name="password"
+          />
+          <p class="pass-error text-sm text-red-600"></p>
+          <p class="auth-error text-sm text-red-600"></p>
+        </div>
+
+        <button
+          type="submit"
+          class="p-2 w-full bg-blue-500 text-white font-medium mb-3"
+        >
+          Login
+        </button>
+
+        <div class="flex gap-1 justify-center">
+          <p>Don't have an account?</p>
+          <a class="text-blue-500" href="/auth/signup">Signup</a>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      const loginForm = document.querySelector('form');
+      const usernameError = document.querySelector('.user-error');
+      const passwordError = document.querySelector('.pass-error');
+      const authError = document.querySelector('.auth-error');
+
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        authError.textContent = '';
+        usernameError.textContent = '';
+        passwordError.textContent = '';
+
+        const formData = new FormData(loginForm);
+        const username = formData.get('username');
+        const password = formData.get('password');
+
+        if (username.length === 0) {
+          usernameError.textContent = 'Username is required';
+          return;
+        }
+
+        if (password.length === 0) {
+          passwordError.textContent = 'Password is required';
+          return;
+        }
+
+        const response = await fetch('/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: username,
+            password: password,
+          }),
+        });
+
+        const data = await response.json();
+        if (response.status == 400) {
+          if (data['username']) {
+            usernameError.textContent = data['username'];
+          }
+          if (data['password']) {
+            passwordError.textContent = data['password'];
+          }
+        }
+
+        if (response.status == 401) {
+          authError.textContent = 'Username or Password is Incorrect';
+        }
+        if (response.status == 200) {
+          window.location.href = '/polls';
+        }
+      });
+    </script>
+  </body>
+</html>

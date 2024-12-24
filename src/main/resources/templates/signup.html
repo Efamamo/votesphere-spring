@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="fragments/head :: head"></head>
+
+  <body>
+    <div
+      class="max-w-xl mx-auto px-12 py-4 border boder-gray-200 rounded-lg mt-10 md:mt-40"
+    >
+      <h1 class="text-2xl font-bold text-center">Signup</h1>
+      <h3 class="text-center mt-1 mb-4">Register and Create New Account</h3>
+
+      <form>
+        <div class="flex flex-col gap-1 mb-4">
+          <label>Username</label>
+          <input
+            class="border border-gray-300 py-1 px-2 focus:outline-none"
+            type="text"
+            name="username"
+          />
+          <p class="user-error text-sm text-red-600"></p>
+        </div>
+
+        <div class="flex flex-col gap-1 mb-4">
+          <label>Email</label>
+          <input
+            class="border border-gray-300 py-1 px-2 focus:outline-none"
+            type="email"
+            name="email"
+          />
+          <p class="email-error text-sm text-red-600"></p>
+        </div>
+
+        <div class="flex flex-col gap-1 mb-8">
+          <label>Password</label>
+          <input
+            class="border border-gray-300 py-1 px-2 focus:outline-none"
+            type="password"
+            name="password"
+          />
+          <p class="pass-error text-sm text-red-600"></p>
+        </div>
+
+        <button
+          type="submit"
+          class="p-2 w-full bg-blue-500 text-white font-medium mb-3"
+        >
+          Signup
+        </button>
+
+        <div class="flex gap-1 justify-center">
+          <p>Don't have an account?</p>
+          <a class="text-blue-500" href="/auth/login">Login</a>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      const myForm = document.querySelector('form');
+      const usernameError = document.querySelector('.user-error');
+      const passwordError = document.querySelector('.pass-error');
+      const emailError = document.querySelector('.email-error');
+
+      myForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        emailError.textContent = '';
+        usernameError.textContent = '';
+        passwordError.textContent = '';
+
+        const formData = new FormData(myForm);
+        const username = formData.get('username');
+        const email = formData.get('email');
+        const password = formData.get('password');
+
+        if (username.length == 0) {
+          usernameError.textContent = 'Username is required';
+          return;
+        }
+
+        if (email.length == 0) {
+          emailError.textContent = 'Email is required';
+          return;
+        }
+
+        if (password.length < 6) {
+          passwordError.textContent = 'Minimum password length is 6';
+          return;
+        }
+
+        const response = await fetch('/auth/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: username,
+            email: email,
+            password: password,
+          }),
+        });
+
+        const data = await response.json();
+        console.log(data);
+
+        if (response.status == 400) {
+          if (data['username']) {
+            usernameError.textContent = data['username'];
+          }
+
+          if (data['email']) {
+            emailError.textContent = data['email'];
+          }
+
+          if (data['password']) {
+            passwordError.textContent = data['password'];
+          }
+        }
+
+        if (response.status == 409) {
+          if (data['username']) {
+            usernameError.textContent = data['username'];
+          }
+
+          if (data['email']) {
+            emailError.textContent = data['email'];
+          }
+        }
+        if (response.status == 201) {
+          window.location.href = '/polls';
+        }
+      });
+    </script>
+  </body>
+</html>
