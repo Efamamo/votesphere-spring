@@ -1,24 +1,60 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
   <head th:replace="fragments/logged_head :: head"></head>
-
-  <body>
+  <body class="bg-gray-50 min-h-screen">
+    <!-- Navigation -->
     <nav th:replace="fragments/nav :: nav"></nav>
-    <a class="ml-8 text-blue-500" href="/polls/add">Add Poll</a>
-    <ul class="ml-8">
-      <li th:each="poll : ${polls}">
-        <div class="flex gap-2">
-          <h2 th:text="${poll.id}"></h2>
-          <h1 th:text="${poll.question}"></h1>
-        </div>
 
-        <div
-          class="flex flex-col gap-2 ml-6"
-          th:each="choice : ${poll.choices}"
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+      <!-- Add Poll Button -->
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-semibold text-gray-800">Polls</h1>
+        <a
+          href="/polls/add"
+          class="px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
         >
-          <h2 th:text="${choice}"></h2>
-        </div>
-      </li>
-    </ul>
+          Add Poll
+        </a>
+      </div>
+
+      <!-- Polls List -->
+      <ul class="space-y-6">
+        <li th:each="poll : ${polls}" class="bg-white rounded-lg shadow p-6">
+          <!-- Poll Header -->
+          <div class="flex items-center gap-4 mb-4">
+            <span
+              th:text="${poll.id}"
+              class="text-sm font-medium text-gray-500 bg-gray-100 px-3 py-1 rounded-full"
+            ></span>
+            <h2
+              th:text="${poll.question}"
+              class="text-xl font-semibold text-gray-800"
+            ></h2>
+          </div>
+
+          <!-- Choices -->
+          <div
+            class="space-y-2 pl-12"
+            th:each="choice : ${poll.choices}"
+            th:if="${choice.trim() != ''}"
+          >
+            <div class="flex items-center gap-2">
+              <input
+                type="radio"
+                th:name="${poll.id}"
+                th:id="${choice}"
+                class="text-blue-500"
+              />
+              <label
+                th:text="${choice}"
+                th:for="${choice}"
+                class="text-gray-700"
+              ></label>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
   </body>
 </html>
