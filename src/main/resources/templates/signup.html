@@ -4,7 +4,7 @@
 
   <body>
     <div
-      class="max-w-xl mx-auto px-12 py-4 border boder-gray-200 rounded-lg mt-10 md:mt-40"
+      class="max-w-xl mx-2 md:mx-auto px-3 md:px-12 py-4 border boder-gray-200 rounded-lg mt-20 md:mt-40"
     >
       <h1 class="text-2xl font-bold text-center">Signup</h1>
       <h3 class="text-center mt-1 mb-4">Register and Create New Account</h3>
@@ -42,7 +42,7 @@
 
         <button
           type="submit"
-          class="p-2 w-full bg-blue-500 text-white font-medium mb-3"
+          class="p-2 w-full bg-blue-500 text-white font-medium mb-3 signup-button"
         >
           Signup
         </button>
@@ -59,6 +59,7 @@
       const usernameError = document.querySelector('.user-error');
       const passwordError = document.querySelector('.pass-error');
       const emailError = document.querySelector('.email-error');
+      const signupButton = document.querySelector('.signup-button');
 
       myForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -86,6 +87,8 @@
           return;
         }
 
+        signupButton.textContent = 'Signing Up ...';
+
         const response = await fetch('/auth/signup', {
           method: 'POST',
           headers: {
@@ -97,6 +100,8 @@
             password: password,
           }),
         });
+
+        signupButton.textContent = 'Signup';
 
         const data = await response.json();
         console.log(data);
