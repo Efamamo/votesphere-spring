@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <head th:replace="fragments/head :: head"></head>
+  <head th:replace="fragments/logged_head :: head"></head>
 
   <body>
-    <h1>Polls</h1>
+    <nav th:replace="fragments/nav :: nav"></nav>
     <a href="/polls/add">Add Poll</a>
     <ul>
       <li th:each="post : ${polls}">
