@@ -1,0 +1,4 @@
+nav div .active {
+  border-bottom: rgb(13, 15, 165) 2px solid;
+  font-weight: bold;
+}

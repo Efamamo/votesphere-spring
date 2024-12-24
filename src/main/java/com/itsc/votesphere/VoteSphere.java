@@ -10,6 +10,7 @@ public class VoteSphere {
 		SpringApplication.run(VoteSphere.class, args);
 	}
 
+
     
 }
 

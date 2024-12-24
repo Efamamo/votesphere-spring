@@ -14,9 +14,14 @@ public class PollController {
     private PollRepository pollRepository;
 
     @GetMapping("")
-    public String getPosts(Model model) {
+    public String getPolls(Model model) {
         model.addAttribute("polls", pollRepository.findAll());
         return "polls";
+    }
+
+    @GetMapping("/add")
+    public String getAddPolls() {
+        return "add_poll";
     }
 }
 

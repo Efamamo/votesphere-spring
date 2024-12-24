@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="fragments/head :: head"></head>
+  <body>
+    <nav th:replace="fragments/header :: nav"></nav>
+
+    <main class="mx-4 md:mx-16 mt-10 md:mt-40">
+      <div class="lg:flex gap-28 justify-end items-center">
+        <img src="/assets/hero.png" />
+
+        <div class="lg:w-1/2 flex gap-6 flex-col items-start">
+          <h1 class="text-3xl font-bold mt-4">Your voice, your choice</h1>
+          <p>
+            VoteSphere is the ultimate platform for group-based poll management,
+            empowering communities to create, manage, and vote on polls with
+            ease. Whether it's for teams, friends, or larger groups, VoteSphere
+            simplifies decision-making, ensuring every vote counts. Join now to
+            experience fast, secure, and transparent poll creation and results —
+            all in one place.
+          </p>
+          <a
+            class="font-medium bg-blue-500 text-white px-14 py-2 rounded-lg"
+            href="/auth/signup"
+          >
+            GET STARTED
+          </a>
+        </div>
+      </div>
+      <div class="mt-48">
+        <h2 class="text-center text-3xl font-bold">Services We Provide</h2>
+        <div class="lg:flex justify-evenly mt-11 items-start">
+          <div class="lg:max-w-sm">
+            <img class="rounded-lg" src="assets/poll.webp" />
+            <h2 class="mt-8 text-xl font-bold">Group Poll Management</h2>
+            <p>
+              We make it simple to manage polls within your groups. Create
+              custom groups for your team, community, or organization and
+              effortlessly set up polls. Our system lets you manage multiple
+              groups, track participation, and organize votes, all from a
+              user-friendly interface.
+            </p>
+          </div>
+          <div class="lg:max-w-sm">
+            <img class="rounded-lg" src="assets/voting.png" />
+            <h2 class="mt-8 text-xl font-bold">Real-time Voting and Results</h2>
+            <p>
+              VoteSphere ensures a seamless voting experience with live,
+              real-time updates. Users can cast their votes instantly, and
+              results are displayed as soon as polling ends. This feature
+              promotes transparency and allows participants to see immediate
+              outcomes, helping your group make timely decisions.
+            </p>
+          </div>
+
+          <div class="lg:max-w-sm">
+            <img class="rounded-lg" src="/assets/secure.png" />
+            <h2 class="mt-8 text-xl font-bold">Secure and Private Voting</h2>
+            <p>
+              Your security is our priority. We provide robust authentication
+              and authorization features to ensure that only authorized group
+              members can participate in polls. All votes are securely
+              encrypted, maintaining privacy and preventing tampering, so you
+              can trust the integrity of your poll results.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="mt-40 flex flex-col lg:flex-row justify-center items-center gap-12"
+      >
+        <div class="order-2 lg:w-1/2 lg:order-1">
+          <h2 class="text-3xl font-bold mb-4">Why Us</h2>
+          <p class="mb-3">
+            <span class="font-semibold">Effortless Collaboration</span>: With
+            intuitive group and poll management, VoteSphere makes it easy for
+            users to create polls, invite members, and cast votes — all in just
+            a few clicks.
+          </p>
+          <p class="mb-3">
+            <span class="font-semibold">Secure and Transparent Voting</span>: We
+            prioritize the security and integrity of every vote. Our system
+            ensures that results are clear and trustworthy, promoting
+            transparency in decision-making.
+          </p>
+          <p class="mb-3">
+            <span class="font-semibold">Tailored for Groups</span>: Whether
+            you're a small team or a large community, VoteSphere is designed to
+            adapt to your needs. Manage multiple polls, track progress, and see
+            real-time results — all within one platform.
+          </p>
+          <p class="mb-3">
+            <span class="font-semibold">Reliable Support</span>: We're committed
+            to providing top-notch customer service and continuous updates,
+            ensuring that your voting experience is always smooth and reliable.
+          </p>
+          <p>
+            With VoteSphere, you get a platform built for simplicity, security,
+            and collaboration.
+          </p>
+        </div>
+        <img
+          class="order-1 lg:max-w-md lg:order-2"
+          src="assets/us.png"
+          alt=""
+        />
+      </div>
+
+      <div class="mt-40 mb-20 lg:flex items-center justify-center gap-20">
+        <img class="lg:max-w-lg" src="assets/contact.png" alt="" />
+        <div class="shadow-lg rounded-lg lg:w-1/3 px-2 md:px-11 pt-2 pb-4">
+          <form action="">
+            <h2 class="text-xl font-bold mb-4">Contact Us</h2>
+            <input
+              class="border w-full rounded-md border-inputBORDER px-2 py-2 my-2 outline-none"
+              type="text"
+              placeholder="Name"
+            />
+            <input
+              class="border w-full rounded-md border-inputBORDER px-2 py-2 my-2 outline-none"
+              type="email"
+              placeholder="Email"
+            />
+            <textarea
+              placeholder="Message"
+              class="w-full h-32 p-2 border border-inputBorder rounded-md resize-none outline-none"
+            ></textarea>
+
+            <button
+              class="font-medium bg-blue-700 text-white px-14 py-2 rounded-lg mt-4"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <footer th:replace="fragments/footer :: footer"></footer>
+  </body>
+</html>

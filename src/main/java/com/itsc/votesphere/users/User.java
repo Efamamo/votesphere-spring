@@ -32,7 +32,6 @@ public class User {
     private String password;
 
     public User() {
-        // You can leave this empty or initialize any default values if needed.
     }
 
 

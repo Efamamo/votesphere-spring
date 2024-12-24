@@ -1,0 +1,108 @@
+<html>
+  <head th:replace="fragments/head :: head"></head>
+  <body>
+    <nav th:replace="fragments/header :: nav"></nav>
+
+    <div class="mx-6 lg:mx-16">
+      <div class="lg:flex mt-32 justify-center gap-16 items-center">
+        <div class="lg:w-1/2 lg:flex justify-end">
+          <img class="rounded-lg lg:w-2/3" src="assets/ourmission.png" />
+        </div>
+
+        <div class="mt-4 lg:w-2/3 lg:pr-20">
+          <h2 class="text-3xl font-bold mb-4">Our Mission</h2>
+          <p>
+            At VoteSphere, our mission is to revolutionize the way people engage
+            in group decision-making by providing an efficient, secure, and
+            user-friendly platform for managing polls. We strive to empower
+            communities, organizations, and teams with the tools they need to
+            facilitate transparent and collaborative voting processes, fostering
+            a culture of inclusivity and active participation.
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-32">
+        <h2 class="text-3xl font-bold text-center">Our Values</h2>
+        <div class="mt-8 flex flex-col lg:flex-row justify-center gap-20">
+          <div class="order-2 lg:order-1 max-w-3xl">
+            <h3 class="text-xl font-semibold">Collaboration</h3>
+            <p class="mb-4">
+              We believe in the power of working together. VoteSphere enables
+              individuals to easily form groups, share ideas, and make
+              collective decisions through seamless communication and
+              collaboration.
+            </p>
+            <h3 class="text-xl font-semibold">Transparency</h3>
+            <p class="mb-4">
+              Ensuring trust in every poll is fundamental to us. We prioritize
+              transparency, allowing users to view real-time results and
+              guaranteeing that every vote is counted fairly and securely.
+            </p>
+            <h3 class="text-xl font-semibold">Innovation</h3>
+            <p class="mb-4">
+              We are committed to continuous improvement and innovation. By
+              utilizing cutting-edge technology, we provide modern, efficient
+              tools that simplify the poll management process for both
+              administrators and participants.
+            </p>
+            <h3 class="text-xl font-semibold">Inclusivity</h3>
+            <p class="mb-4">
+              Everyone's voice matters. We design our platform to be accessible
+              and easy to use, ensuring that people from diverse backgrounds and
+              skill levels can participate in and contribute to group
+              decision-making.
+            </p>
+          </div>
+          <img
+            class="order-1 lg:order-2 w-96 mx-auto lg:mx-0"
+            src="assets/values.png"
+          />
+        </div>
+      </div>
+
+      <div class="mt-32 mb-20">
+        <h2 class="text-3xl font-bold text-center">Our Team</h2>
+        <div class="md:flex justify-center mt-8 gap-10">
+          <a href="https://www.linkedin.com/in/ephrem-mamo/" target="_blank">
+            <div
+              class="shadow-lg rounded-lg px-4 py-2 mt-12 max-w-72 mx-auto md:max-w-80"
+            >
+              <img class="rounded-lg" src="assets/efa.jpeg" alt="" />
+              <h3 class="text-xl mt-1 font-semibold">Ephrem Mamo</h3>
+              <p class="text-lg">Backend Developer</p>
+            </div>
+          </a>
+
+          <a
+            href="https://www.linkedin.com/in/beka-birhanu-atomsa/"
+            target="_blank"
+          >
+            <div
+              class="shadow-lg rounded-lg px-4 py-2 mt-12 max-w-72 mx-auto md:max-w-80"
+            >
+              <img class="rounded-lg" src="assets/beka.jpg" alt="" />
+              <h3 class="text-xl mt-1 font-semibold">Beka Birhanu</h3>
+              <p class="text-lg">Frontend Developer</p>
+            </div>
+          </a>
+
+          <a
+            href="https://www.linkedin.com/in/beka-birhanu-atomsa/"
+            target="_blank"
+          >
+            <div
+              class="shadow-lg rounded-lg px-4 py-2 mt-12 max-w-72 mx-auto md:max-w-80"
+            >
+              <img class="rounded-lg" src="assets/chachi.jpeg" alt="" />
+              <h3 class="text-xl mt-1 font-semibold">Nardos Daniel</h3>
+              <p class="text-lg">UI/UX</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <footer th:replace="fragments/footer :: footer"></footer>
+  </body>
+</html>
