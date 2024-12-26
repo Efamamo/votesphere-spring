@@ -6,15 +6,38 @@
     <nav th:replace="fragments/nav :: nav"></nav>
 
     <!-- Main Content -->
-    <div class="container mx-auto px-4 py-8">
+    <div class="container max-w-6xl mx-auto px-4 py-8">
       <!-- Add Poll Button -->
       <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-semibold text-gray-800">Polls</h1>
+        <h1
+          th:if="${hasGroup && polls.size > 0}"
+          class="text-3xl font-semibold text-gray-800"
+        >
+          Polls
+        </h1>
+        <h1
+          th:if="${hasGroup && polls.size == 0}"
+          class="text-3xl font-semibold text-gray-800"
+        >
+          No Polls
+        </h1>
+        <h1 th:if="${!hasGroup}" class="text-3xl font-semibold text-gray-800">
+          No Group
+        </h1>
+
         <a
+          th:if="${isAdmin && hasGroup}"
           href="/polls/add"
           class="px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
         >
           Add Poll
+        </a>
+        <a
+          th:if="${isAdmin && !hasGroup}"
+          href="/groups/add"
+          class="px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+        >
+          Add Group
         </a>
       </div>
 
@@ -33,24 +56,29 @@
             ></h2>
           </div>
 
-          <!-- Choices -->
-          <div
-            class="space-y-2 pl-12"
-            th:each="choice : ${poll.choices}"
-            th:if="${choice.trim() != ''}"
-          >
-            <div class="flex items-center gap-2">
-              <input
-                type="radio"
-                th:name="${poll.id}"
-                th:id="${choice}"
-                class="text-blue-500"
-              />
-              <label
-                th:text="${choice}"
-                th:for="${choice}"
-                class="text-gray-700"
-              ></label>
+          <div class="space-y-2 pl-12" th:each="choice : ${poll.choices}">
+            <div class="flex justify-between items-center gap-4">
+              <p
+                class="text-lg font-semibold min-w-content"
+                th:text="${choice.count + ' %'}"
+              ></p>
+
+              <div
+                class="flex flex-1 items-center gap-2 cursor-pointer w-full p-2 my-2 border border-grey-400"
+              >
+                <input
+                  type="radio"
+                  th:name="${poll.id}"
+                  th:id="${choice}"
+                  class="text-blue-500 hidden"
+                />
+
+                <label
+                  th:text="${choice.content}"
+                  th:for="${choice}"
+                  class="text-gray-700"
+                ></label>
+              </div>
             </div>
           </div>
         </li>

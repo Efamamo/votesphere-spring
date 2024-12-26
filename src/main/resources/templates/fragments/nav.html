@@ -1,25 +1,39 @@
-<nav class="max-md:hidden flex justify-between mx-16 my-10 items-center">
-    <a href="/">
-      <div class="flex items-center gap-2">
-        <img class="w-10" src="../assets/logo.png" />
-        <h2
-          style="font-family: 'Montserrat', serif"
-          class="text-2xl text-customBlue mt-1"
-        >
-          VOTESPHERE
-        </h2>
-      </div>
-    </a>
-
-    <div class="flex items-center gap-12">
-      <a class="font-medium" href="/" id="nav-home"> DASHBOARD </a>
-      <a class="font-medium" href="/about" id="nav-about"> SETTINGS </a>
-      <a
-        class="font-medium bg-red-700 text-white px-8 py-1 rounded-lg"
-        href="/auth/login"
-        id="nav-login"
+<nav class="max-md:hidden flex justify-between ml-32 mr-8 my-10 items-center">
+  <a href="/">
+    <div class="flex items-center gap-2">
+      <img class="w-10" src="../assets/logo.png" />
+      <h2
+        style="font-family: 'Montserrat', serif"
+        class="text-2xl text-customBlue mt-1"
       >
-        Logout
-      </a>
+        VOTESPHERE
+      </h2>
     </div>
-  </nav>
+  </a>
+
+  <div class="flex items-center gap-5 mt-4">
+    <a
+      class="text-gray-50 hover:text-blue-500 flex gap-1 items-center flex-col max-w-content"
+      href="/"
+      id="nav-home"
+    >
+      <img class="w-6" src="assets/dashboard.png" alt="" />
+      <div class="text-sm">Dashboard</div>
+    </a>
+    <a
+      class="text-gray-50 hover:text-yellow-500 flex gap-1 items-center flex-col max-w-content"
+      href="/about"
+      id="nav-about"
+    >
+      <img class="w-7" src="assets/setting.png" alt="" />
+      <div class="text-sm">Settings</div>
+    </a>
+    <div
+      onclick="fetch('/auth/logout', {method: 'DELETE', credentials: 'include'}).then(() => window.location.href = '/auth/login')"
+      class="text-gray-50 hover:text-red-500 flex gap-1 items-center flex-col max-w-content"
+    >
+      <img class="w-7" src="assets/logout.png" alt="" />
+      <div class="text-sm">Logout</div>
+    </div>
+  </div>
+</nav>

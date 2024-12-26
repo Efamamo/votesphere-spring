@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head th:replace="fragments/logged_head :: head"></head>
+  <body>
+    <nav th:replace="fragments/nav :: nav"></nav>
+    <div class="mt-20 mx-4 md:mx-16 mb-20">
+      <div
+        class="border boder-gray-200 rounded-lg max-w-3xl mx-auto px-4 md:px-11 py-8 mt-14"
+      >
+        <form>
+          <h2 class="text-2xl font-bold text-center mb-8">Add Group</h2>
+
+          <div class="flex flex-col gap-1 mb-8">
+            <label>Group Name</label>
+            <input
+              class="border border-gray-300 py-1 px-2 focus:outline-none"
+              type="text"
+              name="name"
+            />
+            <p class="name-error text-sm text-red-600"></p>
+          </div>
+
+          <button
+            class="font-medium bg-blue-600 text-white px-28 py-2 block mt-8 mx-auto"
+          >
+            Add Group
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      const groupForm = document.querySelector('form');
+      const nameError = document.querySelector('.name-error');
+
+      groupForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        nameError.textContent = '';
+        const formData = new FormData(groupForm);
+        const name = formData.get('name');
+
+        console.log(name);
+
+        const response = await fetch('/groups', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            groupName: name,
+          }),
+        });
+
+        const data = await response.json();
+
+        console.log(data);
+
+        if (response.status == 201) {
+          window.location.href = '/polls';
+        }
+      });
+    </script>
+  </body>
+</html>

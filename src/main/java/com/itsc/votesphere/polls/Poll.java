@@ -1,26 +1,41 @@
 package com.itsc.votesphere.polls;
 
 import java.util.List;
+
+import com.itsc.votesphere.group.Group;
+import com.itsc.votesphere.users.User;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor // Added to ensure no-arg constructor for JPA
+@NoArgsConstructor
 @Entity
 public class Poll {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "question is required")
     private String question;
 
-    private List<String> choices;
+    @ManyToOne
+    @JoinColumn(name = "group_id", referencedColumnName = "id")
+    private Group group;  
+
+    @ManyToOne
+    @JoinColumn(name = "poll_owner_id", referencedColumnName = "id")
+    private User pollOwner;  
+
+    @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Choice> choices; 
 }

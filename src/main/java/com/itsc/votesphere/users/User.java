@@ -1,10 +1,17 @@
 package com.itsc.votesphere.users;
 
+import java.util.Set;
+
+import com.itsc.votesphere.group.Group;
+import com.itsc.votesphere.polls.Poll;
+
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -14,7 +21,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor // Added to ensure no-arg constructor for JPA
+@NoArgsConstructor 
 @Entity
 public class User {
     @Id
@@ -35,4 +42,14 @@ public class User {
     private String password;
 
     private Boolean isAdmin;
+
+    @OneToOne(mappedBy = "admin")
+    private Group group; 
+
+    @ManyToOne
+    @JoinColumn(name = "group_id", referencedColumnName = "id")
+    private Group memberOf; 
+
+    @OneToMany(mappedBy = "pollOwner")
+    private Set<Poll> polls;  
 }

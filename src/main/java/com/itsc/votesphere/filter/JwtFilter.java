@@ -24,7 +24,6 @@ public class JwtFilter implements Filter {
 
         String token = null;
 
-        // Retrieve cookies from the request
         Cookie[] cookies = httpRequest.getCookies();
         
         if (cookies != null) {
@@ -37,7 +36,7 @@ public class JwtFilter implements Filter {
         }
 
         if (token == null || !JwtUtil.validateToken(token)) {
-            httpResponse.sendRedirect("/auth/login");  // This will redirect to the login page
+            httpResponse.sendRedirect("/auth/login"); 
             return;
         }
         
