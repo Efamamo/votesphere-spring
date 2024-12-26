@@ -58,9 +58,7 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header(org.springframework.http.HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(response);
-
-
-        
+   
     }
 
 
@@ -98,8 +96,5 @@ public class AuthController {
 
 
         }
-
    
-
-    
 }

@@ -43,7 +43,7 @@
           <p class="email-error text-sm text-red-600"></p>
         </div>
 
-        <div class="flex flex-col gap-1 mb-8">
+        <div class="flex flex-col gap-1 mb-4">
           <label>Password</label>
           <input
             class="border border-gray-300 py-1 px-2 focus:outline-none"
@@ -53,6 +53,15 @@
           <p class="pass-error text-sm text-red-600"></p>
         </div>
 
+        <div class="flex gap-4 mb-8 items-center">
+          <label>Do You Want to be Admin</label>
+          <input
+            class="border border-gray-300 py-1 px-2 focus:outline-none"
+            type="checkbox"
+            name="isAdmin"
+          />
+          <p class="admin-error text-sm text-red-600"></p>
+        </div>
         <button
           type="submit"
           class="p-2 w-full bg-blue-500 text-white font-medium mb-3 signup-button"
@@ -84,6 +93,9 @@
         const username = formData.get('username');
         const email = formData.get('email');
         const password = formData.get('password');
+        const isAdmin = formData.get('isAdmin');
+
+        console.log(isAdmin === 'on');
 
         if (username.length == 0) {
           usernameError.textContent = 'Username is required';
@@ -111,6 +123,7 @@
             username: username,
             email: email,
             password: password,
+            isAdmin: isAdmin === 'on',
           }),
         });
 

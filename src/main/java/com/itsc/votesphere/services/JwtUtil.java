@@ -2,6 +2,7 @@ package com.itsc.votesphere.services;
 import java.util.Date;
 import org.springframework.stereotype.Component;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -31,7 +32,7 @@ public class JwtUtil {
         return username.equals(extractUsername(token)) && !isTokenExpired(token);
     }
 
-    public boolean validateToken(String token) {
+    public static boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
             return true;
@@ -47,5 +48,9 @@ public class JwtUtil {
                 .getBody()
                 .getExpiration()
                 .before(new Date());
+    }
+
+     public static Claims getClaims(String token) {
+        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }
 }
