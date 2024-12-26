@@ -115,6 +115,7 @@
           authError.textContent = 'Username or Password is Incorrect';
         }
         if (response.status == 200) {
+          console.log(data)
           window.location.href = '/polls';
         }
       });

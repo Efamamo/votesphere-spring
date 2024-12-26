@@ -1,14 +1,18 @@
 package com.itsc.votesphere.auth;
 
+import java.net.http.HttpHeaders;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.itsc.votesphere.services.JwtUtil;
 import com.itsc.votesphere.users.User;
 import com.itsc.votesphere.users.UserService;
 import jakarta.validation.Valid;
@@ -17,6 +21,9 @@ import jakarta.validation.Valid;
 public class AuthController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @PostMapping("/auth/signup")
     public ResponseEntity<Map<String, String>>signup(@RequestBody @Valid User user){
@@ -35,8 +42,25 @@ public class AuthController {
         }
 
         userService.addUser(user);
-        response.put("success", "Signedup Successfully");
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        
+        String token = jwtUtil.generateToken(user.getUsername());
+       
+        ResponseCookie cookie = ResponseCookie.from("accessToken", token)
+            .httpOnly(true) 
+            .secure(true) 
+            .path("/") 
+            .maxAge(60 * 60 * 24) 
+            .sameSite("Strict") 
+            .build();
+
+        response.put("message", "Signup successful");
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .header(org.springframework.http.HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(response);
+
+
+        
     }
 
 
@@ -55,12 +79,25 @@ public class AuthController {
 
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
-        response.put("success", "Logged In Successfully");
 
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        String token = jwtUtil.generateToken(user.getUsername());
+       
+        ResponseCookie cookie = ResponseCookie.from("accessToken", token)
+            .httpOnly(true) 
+            .secure(true) 
+            .path("/") 
+            .maxAge(60 * 60 * 24) 
+            .sameSite("Strict")
+            .build();
+
+        response.put("message", "Login successful");
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .header(org.springframework.http.HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(response);
 
 
-    }
+        }
 
    
 
