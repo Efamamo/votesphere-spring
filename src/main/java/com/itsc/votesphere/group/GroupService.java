@@ -1,11 +1,14 @@
 package com.itsc.votesphere.group;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.itsc.votesphere.users.User;
 import com.itsc.votesphere.users.UserRepository;
 import jakarta.transaction.Transactional;
-import java.util.*;
 
 @Service
 public class GroupService {
@@ -25,5 +28,13 @@ public class GroupService {
         userRepository.save(admin);
 
         return group;
+    }
+
+    public List<User> getGroup(Group group) {
+        
+        return userRepository.findAll().stream()
+        .filter(user -> user.getMemberOf() != null && user.getMemberOf().equals(group))
+        .collect(Collectors.toList());
+       
     }
 }

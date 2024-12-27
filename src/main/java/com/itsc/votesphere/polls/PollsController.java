@@ -31,9 +31,6 @@ public class PollsController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private GroupRepository groupRepository;
-
     @PostMapping("/polls")
     public ResponseEntity<Map<String, Object>> addPoll(@RequestBody @Valid CreatePollDto poll,HttpServletRequest request) throws IOException, java.io.IOException{
         Claims claims = (Claims) request.getAttribute("user");

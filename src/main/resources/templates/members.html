@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="fragments/logged_head :: head"></head>
+  <body class="bg-gray-50 min-h-screen">
+    <nav th:replace="fragments/nav :: nav"></nav>
+    <div class="container max-w-4xl mx-auto px-4 py-8">
+      <div class="flex justify-between items-center mb-6">
+        <h1
+          th:text="${groupName + ' Members'}"
+          class="text-3xl font-semibold text-gray-800"
+        ></h1>
+
+        <a
+          th:if="${isAdmin}"
+          href="/groups/members/add"
+          class="px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+        >
+          Add Member
+        </a>
+      </div>
+
+      <ul class="space-y-2">
+        <li
+          th:each="member : ${members}"
+          class="bg-white rounded-lg shadow p-6 flex justify-between items-center"
+        >
+          <div class="flex items-center gap-4 mb-4">
+            <span
+              th:text="${member.id}"
+              class="text-sm font-medium text-gray-500 bg-gray-100 px-3 py-1 rounded-full"
+            ></span>
+            <h2
+              th:text="${member.username}"
+              class="text-xl font-semibold text-gray-800"
+            ></h2>
+          </div>
+          <button
+            th:if="${isAdmin && currentUser != member.id}"
+            class="text-red-500"
+          >
+            Delete
+          </button>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

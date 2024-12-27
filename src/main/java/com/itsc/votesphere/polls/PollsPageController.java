@@ -34,8 +34,6 @@ public class PollsPageController {
      @Autowired
     private UserService userService ;
 
-    @Autowired
-    private GroupRepository groupRepository ;
 
     @GetMapping("")
     public String getPolls(Model model, HttpServletRequest request, HttpServletResponse response) throws IOException, java.io.IOException{
@@ -62,7 +60,7 @@ public class PollsPageController {
 
         List<Map<String, Object>> pollsData = pollRepository.findAll()
     .stream()
-    .filter(poll -> poll.getGroup().equals(user.getMemberOf())) // Filter polls by user's group
+    .filter(poll -> poll.getGroup().equals(user.getMemberOf())) 
     .map(poll -> {
         Map<String, Object> pollData = new HashMap<>();
         pollData.put("id", poll.getId());
@@ -94,7 +92,7 @@ public class PollsPageController {
     }
 
     @GetMapping("/add")
-    public String getAddPolls(HttpServletRequest request, HttpServletResponse response) throws IOException, java.io.IOException{
+    public String getAddPolls(Model model,HttpServletRequest request, HttpServletResponse response) throws IOException, java.io.IOException{
         Claims claims = (Claims) request.getAttribute("user");
 
         String username = claims.getSubject(); 
@@ -112,6 +110,8 @@ public class PollsPageController {
             response.sendRedirect("/polls");  
             return null;
         }
+
+        model.addAttribute("isAdmin", true);
         
 
         return  "add_poll";

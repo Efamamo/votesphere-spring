@@ -1,5 +1,5 @@
 <nav class="max-md:hidden flex justify-between ml-32 mr-8 my-10 items-center">
-  <a href="/">
+  <a href="/polls">
     <div class="flex items-center gap-2">
       <img class="w-10" src="../assets/logo.png" />
       <h2
@@ -13,26 +13,27 @@
 
   <div class="flex items-center gap-5 mt-4">
     <a
+      th:if="${isAdmin}"
       class="text-gray-50 hover:text-blue-500 flex gap-1 items-center flex-col max-w-content"
-      href="/"
+      href="/polls/add"
       id="nav-home"
     >
-      <img class="w-6" src="assets/dashboard.png" alt="" />
+      <img class="w-6" src="../assets/dashboard.png" alt="" />
       <div class="text-sm">Dashboard</div>
     </a>
     <a
       class="text-gray-50 hover:text-yellow-500 flex gap-1 items-center flex-col max-w-content"
-      href="/about"
+      href="/groups/members"
       id="nav-about"
     >
-      <img class="w-7" src="assets/setting.png" alt="" />
+      <img class="w-7" src="../assets/setting.png" alt="" />
       <div class="text-sm">Settings</div>
     </a>
     <div
       onclick="fetch('/auth/logout', {method: 'DELETE', credentials: 'include'}).then(() => window.location.href = '/auth/login')"
-      class="text-gray-50 hover:text-red-500 flex gap-1 items-center flex-col max-w-content"
+      class="text-gray-50 hover:text-red-500 flex gap-1 items-center flex-col max-w-content cursor-pointer"
     >
-      <img class="w-7" src="assets/logout.png" alt="" />
+      <img class="w-7" src="../assets/logout.png" alt="" />
       <div class="text-sm">Logout</div>
     </div>
   </div>
