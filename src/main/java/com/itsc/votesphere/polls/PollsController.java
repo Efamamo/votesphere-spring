@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.itsc.votesphere.group.Group;
-import com.itsc.votesphere.group.GroupRepository;
 import com.itsc.votesphere.polls.dto.CreatePollDto;
 import com.itsc.votesphere.users.User;
 import com.itsc.votesphere.users.UserService;

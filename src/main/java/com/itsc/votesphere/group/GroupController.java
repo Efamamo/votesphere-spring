@@ -51,7 +51,10 @@ public class GroupController {
             response.put("error", "User is not admin.");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
         }
-
+        if (user.getGroup() != null){
+            response.put("error", "User already have a group.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+        }
         try {
             if (groupRepository.existsByGroupName(group.getGroupName())){
                 response.put("error", "Group Name Taken");
@@ -89,6 +92,8 @@ public class GroupController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
         }
 
+        
+
         try {
             Group group = user.getMemberOf();
 
@@ -117,6 +122,10 @@ public class GroupController {
             }
 
             if (userToAdd.getMemberOf() != null){
+                if (userToAdd.getMemberOf().getGroupName() == group.getGroupName()){
+                    response.put("error", "User Is Already in your group");
+                    return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+                }
                 response.put("error", "User Belongs to another Group");
                 return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
             }
@@ -126,7 +135,7 @@ public class GroupController {
 
 
             response.put("success", "User Added Successfully");
-            return ResponseEntity.status(HttpStatus.OK).body(response);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (IllegalArgumentException e) {
             response.put("error", e.getMessage());
 

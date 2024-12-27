@@ -1,7 +1,6 @@
 package com.itsc.votesphere.group;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,4 +36,26 @@ public class GroupService {
         .collect(Collectors.toList());
        
     }
+
+    public void removeUser(Group group, User user){
+        if (user.getMemberOf() == null){
+            return;
+        }
+
+        if (user.getGroup() != null){
+            return;
+        }
+
+        if (user.getMemberOf().getGroupName() != group.getGroupName()){
+            return;
+        }
+
+        user.setMemberOf(null);
+
+        userRepository.save(user);
+
+
+    }
+
+    
 }

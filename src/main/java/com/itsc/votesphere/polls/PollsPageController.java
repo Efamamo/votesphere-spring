@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.itsc.votesphere.users.UserService;
 import com.itsc.votesphere.group.Group;
-import com.itsc.votesphere.group.GroupRepository;
 import com.itsc.votesphere.users.User;
 
 

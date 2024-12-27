@@ -5,7 +5,7 @@
     <nav th:replace="fragments/nav :: nav"></nav>
     <div class="mt-20 mx-4 md:mx-16 mb-20">
       <div
-        class="border boder-gray-200 rounded-lg max-w-3xl mx-auto px-4 md:px-11 py-8 mt-14"
+        class="border boder-gray-200 rounded-lg max-w-xl mx-auto px-4 md:px-11 py-8 mt-14"
       >
         <form>
           <h2 class="text-2xl font-bold text-center mb-8">Add Group</h2>
@@ -39,7 +39,10 @@
         const formData = new FormData(groupForm);
         const name = formData.get('name');
 
-        console.log(name);
+        if (name.length == 0) {
+          nameError.textContent = 'Group Name is required';
+          return;
+        }
 
         const response = await fetch('/groups', {
           method: 'POST',
@@ -55,6 +58,8 @@
 
         if (response.status == 201) {
           window.location.href = '/polls';
+        } else {
+          nameError.textContent = data['error'];
         }
       });
     </script>
