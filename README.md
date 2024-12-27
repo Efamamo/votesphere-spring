@@ -36,6 +36,6 @@ To run VoteSphere locally, follow these steps:
 
 ```bash
     mvn clean install
-    mvn exec:java -Dexec.mainClass="com.itsc.votesphere.VoteSphere"
+    make run
 
 ```

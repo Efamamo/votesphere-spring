@@ -111,7 +111,8 @@ public class PollsPageController {
         }
 
         model.addAttribute("isAdmin", true);
-        
+        model.addAttribute("hasGroup", user.getMemberOf() != null);
+
 
         return  "add_poll";
     }

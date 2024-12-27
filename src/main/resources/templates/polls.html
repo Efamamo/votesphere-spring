@@ -26,6 +26,16 @@
         </h1>
 
         <a
+          class="text-gray-50 hover:text-blue-500 flex gap-1 items-center flex-col max-w-content"
+          href="/polls/add"
+          th:if="${isAdmin && hasGroup}"
+          id="nav-about"
+        >
+          <img class="w-7" src="../../assets/add.png" alt="" />
+          <div class="text-sm">Add Poll</div>
+        </a>
+
+        <a
           th:if="${isAdmin && !hasGroup}"
           href="/groups/add"
           class="px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
@@ -52,25 +62,25 @@
           <div class="space-y-2 pl-12" th:each="choice : ${poll.choices}">
             <div class="flex justify-between items-center gap-4">
               <p
-                class="text-lg font-semibold min-w-content"
+                class="text-lg font-semibold w-14 text-right"
                 th:text="${choice.count + ' %'}"
               ></p>
 
-              <div
-                class="flex flex-1 items-center gap-2 cursor-pointer w-full p-2 my-2 border border-grey-400"
-              >
-                <input
-                  type="radio"
-                  th:name="${poll.id}"
-                  th:id="${choice}"
-                  class="text-blue-500 hidden"
-                />
-
-                <label
-                  th:text="${choice.content}"
-                  th:for="${choice}"
-                  class="text-gray-700"
-                ></label>
+              <div class="w-full border border-grey-400 my-2 flex gap-2">
+                <div class="flex items-center gap-2 cursor-pointer p-2">
+                  <input
+                    type="radio"
+                    th:name="${poll.id}"
+                    th:id="${choice}"
+                    class="appearance-none w-5 h-5 border-2 border-blue-500 rounded-full checked:bg-blue-500"
+                  />
+                  <label
+                    th:text="${choice.content}"
+                    th:for="${choice}"
+                    class="font-medium cursor-pointer"
+                  ></label>
+                </div>
+                <div class="bg-gray-300 w-0.5 h-content"></div>
               </div>
             </div>
           </div>
