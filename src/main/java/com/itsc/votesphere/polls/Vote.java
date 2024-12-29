@@ -1,6 +1,6 @@
 package com.itsc.votesphere.polls;
 
-import java.util.List;
+import com.itsc.votesphere.users.User;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,21 +9,23 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Choice {
+public class Vote {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+ 
 
-    @Column(nullable = false)
-    private String content;  
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;  
 
     @ManyToOne
     @JoinColumn(name = "poll_id", referencedColumnName = "id")
     private Poll poll;  
 
-    @OneToMany(mappedBy = "choice", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Vote> votes; 
+    @ManyToOne
+    @JoinColumn(name = "choice_id", referencedColumnName = "id")
+    private Choice choice;  
 
 }
-

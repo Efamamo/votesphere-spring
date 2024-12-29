@@ -1,10 +1,11 @@
 package com.itsc.votesphere.users;
 
+import java.util.List;
 import java.util.Set;
 
 import com.itsc.votesphere.group.Group;
 import com.itsc.votesphere.polls.Poll;
-
+import com.itsc.votesphere.polls.Vote;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -52,4 +53,7 @@ public class User {
 
     @OneToMany(mappedBy = "pollOwner")
     private Set<Poll> polls;  
+
+    @OneToMany(mappedBy = "user")
+    private List<Vote> votes;
 }

@@ -48,5 +48,10 @@ public class PollsService {
         savedPoll.setChoices(choiceEntities);
         return savedPoll;
     }
+
+    public Poll findPollById(Long id) {
+        return pollRepository.findById(id).orElse(null);
+    }
+    
     
 }

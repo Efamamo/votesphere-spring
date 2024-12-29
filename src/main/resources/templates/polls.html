@@ -62,7 +62,7 @@
           <div class="space-y-2 pl-12" th:each="choice : ${poll.choices}">
             <div class="flex justify-between items-center gap-4">
               <p
-                class="text-lg font-semibold w-14 text-right"
+                class="text-lg font-semibold w-24 text-right"
                 th:text="${choice.count + ' %'}"
               ></p>
 
@@ -71,16 +71,22 @@
                   <input
                     type="radio"
                     th:name="${poll.id}"
-                    th:id="${choice}"
-                    class="appearance-none w-5 h-5 border-2 border-blue-500 rounded-full checked:bg-blue-500"
+                    th:id="${choice.id}"
+                    th:value="${choice.content}"
+                    th:checked="${choice.checked == 'yes'}"
+                    class="appearance-none w-5 h-5 border-2 border-blue-500 rounded-full checked:bg-blue-500 poll-choice cursor-pointer"
                   />
+
                   <label
                     th:text="${choice.content}"
-                    th:for="${choice}"
+                    th:for="${choice.id}"
                     class="font-medium cursor-pointer"
                   ></label>
                 </div>
-                <div class="bg-gray-300 w-0.5 h-content"></div>
+                <div
+                  class="bg-blue-600 h-content"
+                  th:style="'width: ' + (${choice.count} == 0 ? '0.2' : ${choice.count}) + '%;'"
+                ></div>
               </div>
             </div>
           </div>
@@ -89,3 +95,33 @@
     </div>
   </body>
 </html>
+
+<script>
+  // Select all elements with the class 'poll-choice'
+  const choices = document.querySelectorAll('.poll-choice');
+
+  // Iterate over each choice and attach a click event listener
+  choices.forEach((choice) => {
+    choice.addEventListener('click', async (e) => {
+      // Log the ID of the selected choice
+      const choice = e.target.id;
+      const poll = e.target.name;
+
+      const response = await fetch(`/polls/${poll}?choice=${choice}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          choiceId: choice,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.status == 200) {
+        window.location.reload();
+      }
+      console.log(data);
+    });
+  });
+</script>

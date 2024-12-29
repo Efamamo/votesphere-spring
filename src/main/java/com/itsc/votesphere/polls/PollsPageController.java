@@ -58,26 +58,60 @@ public class PollsPageController {
         
 
         List<Map<String, Object>> pollsData = pollRepository.findAll()
-    .stream()
-    .filter(poll -> poll.getGroup().equals(user.getMemberOf())) 
-    .map(poll -> {
-        Map<String, Object> pollData = new HashMap<>();
-        pollData.put("id", poll.getId());
-        pollData.put("question", poll.getQuestion());
+        .stream()
+        .filter(poll -> poll.getGroup().equals(user.getMemberOf()))
+        .map(poll -> {
+            Map<String, Object> pollData = new HashMap<>();
+            pollData.put("id", poll.getId());
+            pollData.put("question", poll.getQuestion());
+    
+            // Calculate the total votes for the poll
+            final int total = poll.getChoices().stream()
+                .mapToInt(choice -> choice.getVotes().size())
+                .sum();
+           
+    
+            // Map the choices
+            List<Map<String, String>> choiceContents = poll.getChoices().stream()
+                .map(choice -> {
+                     Choice userVote = null;
 
-        List<Map<String, String>> choiceContents = poll.getChoices().stream()
-            .map(choice -> {
-                Map<String, String> choiceData = new HashMap<>();
-                choiceData.put("content", choice.getContent());
-                choiceData.put("count", String.valueOf(choice.getCount()));
-                return choiceData;
-            })
-            .collect(Collectors.toList());
+            
 
-        pollData.put("choices", choiceContents);
-        return pollData;
-    })
-    .collect(Collectors.toList());
+
+            for (Vote vote: user.getVotes()){
+                if (vote.getPoll() == poll){
+                    userVote = vote.getChoice();
+                    break;
+                }
+            }
+
+
+            
+                    Map<String, String> choiceData = new HashMap<>();
+                    choiceData.put("content", choice.getContent());
+                    choiceData.put("checked", choice == userVote ? "yes": "no");
+
+
+                    if (total == 0) {
+                        choiceData.put("count", "0");
+                    } else {
+                        choiceData.put("count", String.valueOf((choice.getVotes().size()) / (double) total * 100));
+                    }                     choiceData.put("id", choice.getId().toString());
+                    return choiceData;
+                })
+                .collect(Collectors.toList());
+            
+           
+
+
+                pollData.put("choices", choiceContents);
+                pollData.put("total", total == 0 ? 1 : total);
+            return pollData;
+        })
+        .collect(Collectors.toList());
+
+
 
 
             model.addAttribute("polls", pollsData);
