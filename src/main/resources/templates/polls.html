@@ -46,9 +46,17 @@
 
       <!-- Polls List -->
       <ul class="space-y-6">
-        <li th:each="poll : ${polls}" class="bg-white rounded-lg shadow p-6">
+        <li
+          th:each="poll : ${polls}"
+          th:value="${poll.id}"
+          class="bg-white rounded-lg shadow p-6 pb-4 to-single cursor-pointer"
+          th:data-poll-id="${poll.id}"
+        >
           <!-- Poll Header -->
-          <div class="flex items-center gap-4 mb-4">
+          <div
+            class="flex items-center gap-4 mb-4 to-single cursor-pointer"
+            th:data-poll-id="${poll.id}"
+          >
             <span
               th:text="${poll.id}"
               class="text-sm font-medium text-gray-500 bg-gray-100 px-3 py-1 rounded-full"
@@ -90,6 +98,42 @@
               </div>
             </div>
           </div>
+          <div
+            class="flex justify-between items-center mt-4 border-t pt-4 pl-4"
+          >
+            <div class="flex gap-2 items-center cursor-pointer">
+              <img src="assets/comment.png" alt="" class="w-6 mt-1" />
+              <div class="flex items-center gap-1">
+                <p class="font-medium text-blue-600">0 Comments</p>
+                <img src="assets/next.png" alt="" class="w-3 mt-0.5" />
+              </div>
+            </div>
+
+            <div class="flex items-center gap-6 mr-2">
+              <div class="flex items-center gap-2">
+                <p class="font-medium text-sm mt-2">10</p>
+                <button class="focus:outline-none">
+                  <img
+                    src="assets/like.png"
+                    alt="Like"
+                    class="w-5 hover:scale-110 transition-transform"
+                  />
+                </button>
+              </div>
+
+              <!-- Dislike Section -->
+              <div class="flex items-center gap-2 mt-2">
+                <p class="font-medium text-sm">2</p>
+                <button class="focus:outline-none">
+                  <img
+                    src="assets/dislike.png"
+                    alt="Dislike"
+                    class="w-5 hover:scale-110 transition-transform pt-2.5"
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
         </li>
       </ul>
     </div>
@@ -99,6 +143,7 @@
 <script>
   // Select all elements with the class 'poll-choice'
   const choices = document.querySelectorAll('.poll-choice');
+  const toSingle = document.querySelectorAll('.to-single');
 
   // Iterate over each choice and attach a click event listener
   choices.forEach((choice) => {
@@ -122,6 +167,18 @@
         window.location.reload();
       }
       console.log(data);
+    });
+  });
+
+  toSingle.forEach((s) => {
+    s.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const pollId = s.getAttribute('data-poll-id');
+      window.location.href = `/polls/${pollId}`;
+    });
+
+    s.querySelectorAll('*').forEach((child) => {
+      child.addEventListener('click', (e) => e.stopPropagation());
     });
   });
 </script>
