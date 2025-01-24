@@ -1,4 +1,5 @@
 package com.itsc.votesphere.auth;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,6 +60,7 @@ public class AuthController {
         String otp = otpGenerator.generateOTP();
         user.setOtp(otp);
         user.setIsVerified(false);
+        user.setOtpExpirationDate(LocalDateTime.now().plusMinutes(10));
 
         userService.addUser(user);
         
@@ -151,9 +153,14 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
 
+        if (user.getOtpExpirationDate() == null || LocalDateTime.now().isAfter(user.getOtpExpirationDate())) {
+            response.put("error", "OTP has expired");
+            return ResponseEntity.status(422).body(response);
+        }
+
         Boolean otpMatch = user.getOtp().equals(otpData.getOtp());;
         if (!otpMatch){
-            response.put("error", "Invalid or expired otp");
+            response.put("error", "Invalid otp");
             return ResponseEntity.status(422).body(response);
         }
 
@@ -180,5 +187,31 @@ public class AuthController {
 
         }
 
+        @PatchMapping("/auth/otp/resend")
+        public ResponseEntity<Map<String, String>> resendOtp(@RequestBody @Valid Resend resendOtp){
+            Map<String, String> response = new HashMap<>();
+            User user = userService.findUserByEmail(resendOtp.getEmail());
+            if (user == null){  
+                response.put("error", "user not found");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+
+            String otp = otpGenerator.generateOTP();
+
+
+            user.setOtp(otp);
+            user.setOtpExpirationDate(LocalDateTime.now().plusMinutes(10));
+            userService.saveUser(user);
+
+            EmailEvent emailEvent = new EmailEvent(this, user.getEmail(), "Your OTP: "+otp , "Email Verification");
+            applicationEventPublisher.publishEvent(emailEvent);
+
+            response.put("email", user.getEmail());
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+
+        }
+
     }
+
+   
 

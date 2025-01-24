@@ -68,11 +68,13 @@
         </div>
 
         <p class="otp-error text-sm text-red-600"></p>
+        <p class="otp-success text-sm text-green-600"></p>
+
 
 
         <button
           type="submit"
-          class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition"
+          class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition verify-btn"
         >
           Verify OTP
         </button>
@@ -80,17 +82,57 @@
 
       <p class="text-sm text-gray-600 text-center mt-4">
         Didn't receive the code?
-        <a href="#" class="text-blue-500 font-medium hover:underline"
-          >Resend OTP</a
+        <button class="text-blue-500 font-medium hover:underline resend"
+          >Resend OTP</button
         >
       </p>
     </div>
 
     <script>
-      const button = document.querySelector(".submit-otp")
+      const verifyForm = document.querySelector(".submit-otp")
       const otpError = document.querySelector(".otp-error")
-      button,addEventListener("submit", async (e) => {
-        e.preventDefault()
+      const otpSuccess = document.querySelector(".otp-success")
+      const verifyButton = document.querySelector(".verify-btn")
+
+      const resend = document.querySelector(".resend")
+
+      resend.addEventListener("click", async (e) => {
+      otpError.textContent = "";
+      otpSuccess.textContent = "";
+
+      try {
+      resend.textContent = "Resending OTP..."
+        const response = await fetch('/auth/otp/resend', {
+          method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: localStorage.getItem("email")
+          
+        }),
+          });
+
+          resend.textContent = "Resend OTP"
+
+          const data = await response.json();
+
+          if (response.status != 200) {
+            otpError.textContent = data.error;
+          }else{
+            otpSuccess.textContent = "New Otp is Sent"
+          }
+        } catch (error) {
+          otpError.textContent = "An error occurred. Please try again.";
+        }
+
+      })
+
+
+      verifyForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        otpError.textContent = "";
+        otpSuccess.textContent = "";
 
         const otpInputs = document.querySelectorAll(".otp-input");
         let otp = Array.from(otpInputs).map(input => input.value).join("");
@@ -103,6 +145,7 @@
 
 
       try {
+      verifyButton.textContent = "Verifying OTP...";
       const response = await fetch('/auth/otp', {
         method: 'PATCH',
         headers: {
@@ -113,6 +156,7 @@
           otp: otp 
         }),
       });
+       verifyButton.textContent = "Verify OTP";
 
       const data = await response.json();
 
@@ -122,6 +166,7 @@
           window.location.href = "/polls";
         }
       } catch (error) {
+      console.log(error)
         otpError.textContent = "An error occurred. Please try again.";
       }
 

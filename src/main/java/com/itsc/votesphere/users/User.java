@@ -1,5 +1,6 @@
 package com.itsc.votesphere.users;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -7,11 +8,6 @@ import com.itsc.votesphere.group.Group;
 import com.itsc.votesphere.polls.Poll;
 import com.itsc.votesphere.polls.Vote;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -47,6 +43,8 @@ public class User {
     private String otp;
 
     private Boolean isVerified;
+
+    private LocalDateTime otpExpirationDate;
 
     @OneToOne(mappedBy = "admin")
     private Group group; 
