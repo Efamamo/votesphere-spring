@@ -47,6 +47,11 @@ public class GroupsPageController {
             return null;
         }
 
+        if (!user.getIsVerified()){
+            response.sendRedirect("/auth/otp");  
+            return null;
+        }
+
         if (!user.getIsAdmin()){
             response.sendRedirect("/polls");  
             return null;
@@ -65,6 +70,11 @@ public class GroupsPageController {
 
         if (user == null){
             response.sendRedirect("/auth/login");  
+            return null;
+        }
+
+        if (!user.getIsVerified()){
+            response.sendRedirect("/auth/otp");  
             return null;
         }
 
@@ -95,6 +105,11 @@ public class GroupsPageController {
 
         if (user == null){
             response.sendRedirect("/auth/login");  
+            return null;
+        }
+
+        if (!user.getIsVerified()){
+            response.sendRedirect("/auth/otp");  
             return null;
         }
 

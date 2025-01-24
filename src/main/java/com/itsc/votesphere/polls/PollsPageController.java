@@ -47,6 +47,11 @@ public class PollsPageController {
             return null;
         }
 
+        if (!user.getIsVerified()){
+            response.sendRedirect("/auth/otp");  
+            return null;
+        }
+
         Group userGroup = user.getMemberOf();
 
         if (userGroup == null){
@@ -138,6 +143,11 @@ public class PollsPageController {
             return null;
         }
 
+        if (!user.getIsVerified()){
+            response.sendRedirect("/auth/otp");  
+            return null;
+        }
+
         Group userGroup = user.getMemberOf();
 
         if (userGroup == null){
@@ -224,6 +234,11 @@ public class PollsPageController {
             response.sendRedirect("/auth/login"); 
             return null;
 
+        }
+
+        if (!user.getIsVerified()){
+            response.sendRedirect("/auth/otp");  
+            return null;
         }
 
         if (!user.getIsAdmin()){

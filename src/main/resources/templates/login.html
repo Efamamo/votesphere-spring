@@ -114,8 +114,12 @@
         if (response.status == 401) {
           authError.textContent = 'Username or Password is Incorrect';
         }
+        if ((response.status = 422)) {
+          localStorage.setItem('email', data.email);
+          window.location.href = '/auth/otp';
+        }
         if (response.status == 200) {
-          console.log(data)
+          console.log(data);
           window.location.href = '/polls';
         }
       });

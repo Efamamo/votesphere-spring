@@ -74,7 +74,9 @@
                 th:text="${choice.count + ' %'}"
               ></p>
 
-              <div class="w-full border border-grey-400 my-2 flex gap-2">
+              <div
+                class="w-full border border-grey-400 my-2 flex gap-2 rounded-e rounded-e-lg"
+              >
                 <div class="flex items-center gap-2 cursor-pointer p-2">
                   <input
                     type="radio"
@@ -92,7 +94,7 @@
                   ></label>
                 </div>
                 <div
-                  class="bg-blue-600 h-content"
+                  class="bg-blue-600 h-content rounded-e rounded-e-lg"
                   th:style="'width: ' + (${choice.count} == 0 ? '0.2' : ${choice.count}) + '%;'"
                 ></div>
               </div>

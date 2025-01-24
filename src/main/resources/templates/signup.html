@@ -156,7 +156,8 @@
           }
         }
         if (response.status == 201) {
-          window.location.href = '/polls';
+          localStorage.setItem('email', email);
+          window.location.href = '/auth/otp';
         }
       });
     </script>

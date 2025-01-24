@@ -15,4 +15,10 @@ public class AuthPageController {
         return "login"; 
     }
 
+    @GetMapping("/auth/otp")
+    public String getOtp() {
+
+        return "otp"; 
+    }
+
 }

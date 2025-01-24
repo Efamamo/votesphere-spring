@@ -44,6 +44,10 @@ public class User {
 
     private Boolean isAdmin;
 
+    private String otp;
+
+    private Boolean isVerified;
+
     @OneToOne(mappedBy = "admin")
     private Group group; 
 

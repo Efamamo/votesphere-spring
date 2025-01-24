@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <head th:replace="fragments/logged_head :: head"></head>
+
+  <body>
+    <nav class="max-md:hidden flex justify-between mx-16 my-10 items-center">
+      <a href="/">
+        <div class="flex items-center gap-2">
+          <img class="w-10" src="../assets/logo.png" />
+          <h2
+            style="font-family: 'Montserrat', serif"
+            class="text-2xl text-customBlue mt-1"
+          >
+            VOTESPHERE
+          </h2>
+        </div>
+      </a>
+    </nav>
+    <div
+      class="bg-white shadow-md rounded-lg p-6 sm:p-8 w-full max-w-md mt-20 md:mt-40 mx-auto"
+    >
+      <h1 class="text-2xl font-semibold text-gray-800 text-center mb-4">
+        Verify Your Account
+      </h1>
+      <p class="text-gray-600 text-sm text-center mb-6">
+        Please enter the 6-digit OTP sent to your email or phone.
+      </p>
+
+      <form class="space-y-4 submit-otp">
+        <div class="flex justify-between space-x-2">
+          <input
+            type="text"
+            maxlength="1"
+            class="otp-input w-12 h-12 border border-gray-300 rounded-md text-center text-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            required
+          />
+          <input
+            type="text"
+            maxlength="1"
+            class="otp-input w-12 h-12 border border-gray-300 rounded-md text-center text-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            required
+          />
+          <input
+            type="text"
+            maxlength="1"
+            class="otp-input w-12 h-12 border border-gray-300 rounded-md text-center text-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            required
+          />
+          <input
+            type="text"
+            maxlength="1"
+            class="otp-input w-12 h-12 border border-gray-300 rounded-md text-center text-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            required
+          />
+          <input
+            type="text"
+            maxlength="1"
+            class="otp-input w-12 h-12 border border-gray-300 rounded-md text-center text-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            required
+          />
+          <input
+            type="text"
+            maxlength="1"
+            class="otp-input w-12 h-12 border border-gray-300 rounded-md text-center text-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            required
+          />
+        </div>
+
+        <p class="otp-error text-sm text-red-600"></p>
+
+
+        <button
+          type="submit"
+          class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition"
+        >
+          Verify OTP
+        </button>
+      </form>
+
+      <p class="text-sm text-gray-600 text-center mt-4">
+        Didn't receive the code?
+        <a href="#" class="text-blue-500 font-medium hover:underline"
+          >Resend OTP</a
+        >
+      </p>
+    </div>
+
+    <script>
+      const button = document.querySelector(".submit-otp")
+      const otpError = document.querySelector(".otp-error")
+      button,addEventListener("submit", async (e) => {
+        e.preventDefault()
+
+        const otpInputs = document.querySelectorAll(".otp-input");
+        let otp = Array.from(otpInputs).map(input => input.value).join("");
+
+        // Validate OTP (e.g., it should be a string of 6 digits)
+        if (otp.length !== 6 || isNaN(otp)) {
+          otpError.textContent = "Please enter a valid 6-digit OTP.";
+          return;
+        }
+
+
+      try {
+      const response = await fetch('/auth/otp', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: localStorage.getItem("email"),
+          otp: otp 
+        }),
+      });
+
+      const data = await response.json();
+
+        if (response.status != 200) {
+          otpError.textContent = data.error;
+        } else {
+          window.location.href = "/polls";
+        }
+      } catch (error) {
+        otpError.textContent = "An error occurred. Please try again.";
+      }
+
+
+      })
+      document
+        .querySelectorAll('.otp-input')
+        .forEach((input, index, inputs) => {
+          input.addEventListener('input', (e) => {
+            const currentInput = e.target;
+            const value = currentInput.value;
+
+            if (value && index < inputs.length - 1) {
+              inputs[index + 1].focus();
+            }
+
+            if (!value && index > 0) {
+              inputs[index - 1].focus();
+            }
+          });
+
+          input.addEventListener('keydown', (e) => {
+            if (e.key === 'Backspace' && !input.value && index > 0) {
+              inputs[index - 1].focus();
+            }
+          });
+        });
+    </script>
+  </body>
+</html>
