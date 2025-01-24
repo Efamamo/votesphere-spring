@@ -10,15 +10,21 @@
       <!-- Polls List -->
       <div class="bg-white rounded-lg shadow p-6 pb-4">
         <!-- Poll Header -->
-        <div class="flex items-center gap-4 mb-4">
-          <span
-            th:text="${poll.id}"
-            class="text-sm font-medium text-gray-500 bg-gray-100 px-3 py-1 rounded-full"
-          ></span>
-          <h2
-            th:text="${poll.question}"
-            class="text-xl font-semibold text-gray-800"
-          ></h2>
+        <div class="flex justify-between">
+          <div class="flex items-center gap-4 mb-4">
+            <span
+              th:text="${poll.id}"
+              class="text-sm font-medium text-gray-500 bg-gray-100 px-3 py-1 rounded-full"
+            ></span>
+            <h2
+              th:text="${poll.question}"
+              class="text-xl font-semibold text-gray-800"
+            ></h2>
+          </div>
+
+          <div th:if="${isAdmin}">
+            <img src="../assets/delete.png" alt="" class="w-5" />
+          </div>
         </div>
 
         <div class="space-y-2 pl-12" th:each="choice : ${poll.choices}">
