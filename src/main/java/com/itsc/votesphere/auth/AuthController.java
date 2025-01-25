@@ -99,17 +99,17 @@ public class AuthController {
         Boolean passwordMatch = userService.checkPassword(loginData.getPassword(), user.getPassword());
         if (!passwordMatch){
             response.put("error", "Unauthorized");
-            return ResponseEntity.status(422).body(response);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
 
         if (!user.getIsVerified()){
             response.put("email", user.getEmail());
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            return ResponseEntity.status(422).body(response);
  
         }
 
         String token = jwtUtil.generateToken(user.getUsername());
-       
+        
         ResponseCookie cookie = ResponseCookie.from("accessToken", token)
             .httpOnly(true) 
             .secure(true) 

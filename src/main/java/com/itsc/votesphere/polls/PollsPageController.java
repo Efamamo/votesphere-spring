@@ -70,6 +70,7 @@ public class PollsPageController {
             Map<String, Object> pollData = new HashMap<>();
             pollData.put("id", poll.getId());
             pollData.put("question", poll.getQuestion());
+            pollData.put("comments", poll.getComments().size());
     
             // Calculate the total votes for the poll
             final int total = poll.getChoices().stream()
@@ -107,8 +108,6 @@ public class PollsPageController {
                     return choiceData;
                 })
                 .collect(Collectors.toList());
-            
-           
 
 
                 pollData.put("choices", choiceContents);
@@ -204,11 +203,22 @@ public class PollsPageController {
                     return choiceData;
                 })
                 .collect(Collectors.toList());
+
+                List<Map<String, String>> comments = poll.getComments().stream()
+                .map(comment -> {
+                    
+                    Map<String, String> commentData = new HashMap<>();
+                    commentData.put("content", comment.getContent());
+                    commentData.put("id", comment.getId().toString());
+                    return commentData;
+                })
+                .collect(Collectors.toList());
             
            
 
 
                 pollData.put("choices", choiceContents);
+                pollData.put("comments", comments);
                 pollData.put("total", total == 0 ? 1 : total);
 
                 model.addAttribute("isAdmin", user.getIsAdmin());

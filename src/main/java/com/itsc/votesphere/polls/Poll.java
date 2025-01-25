@@ -2,6 +2,7 @@ package com.itsc.votesphere.polls;
 
 import java.util.List;
 
+import com.itsc.votesphere.comments.Comment;
 import com.itsc.votesphere.group.Group;
 import com.itsc.votesphere.users.User;
 
@@ -38,4 +39,7 @@ public class Poll {
 
     @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Choice> choices; 
+
+    @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
 }

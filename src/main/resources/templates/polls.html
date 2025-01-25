@@ -107,7 +107,10 @@
               <div class="flex gap-2 items-center cursor-pointer to-single">
                 <img src="assets/comment.png" alt="" class="w-6 mt-1" />
                 <div class="flex items-center gap-1">
-                  <p class="font-medium text-blue-600">0 Comments</p>
+                  <p
+                    th:text="${poll.comments + ' comments'}"
+                    class="font-medium text-blue-600"
+                  ></p>
                   <img src="assets/next.png" alt="" class="w-3 mt-0.5" />
                 </div></div
             ></a>
