@@ -34,7 +34,7 @@
               th:text="${choice.count + ' %'}"
             ></p>
 
-            <div class="w-full border border-grey-400 my-2 flex gap-2">
+            <div class="w-full border border-grey-400 my-2 flex flex-col gap-2">
               <div class="flex items-center gap-2 cursor-pointer p-2">
                 <input
                   type="radio"
@@ -42,7 +42,7 @@
                   th:id="${choice.id}"
                   th:value="${choice.content}"
                   th:checked="${choice.checked == 'yes'}"
-                  class="appearance-none w-5 h-5 border-2 border-blue-500 rounded-full checked:bg-blue-500 poll-choice cursor-pointer"
+                  class="appearance-none w-4 h-4 border-2 border-blue-500 rounded-full checked:bg-blue-500 poll-choice cursor-pointer"
                 />
 
                 <label
@@ -52,7 +52,7 @@
                 ></label>
               </div>
               <div
-                class="bg-blue-600 h-content"
+                class="bg-blue-600 h-1"
                 th:style="'width: ' + (${choice.count} == 0 ? '0.2' : ${choice.count}) + '%;'"
               ></div>
             </div>
@@ -61,7 +61,7 @@
         <div class="flex justify-end items-center mt-4 border-t pt-4 pl-4">
           <div class="flex items-center gap-6 mr-2">
             <div class="flex items-center gap-2">
-              <p class="font-medium text-sm mt-2">10</p>
+              <p class="font-medium text-sm mt-2">0</p>
               <button class="focus:outline-none">
                 <img
                   src="../assets/like.png"
@@ -73,7 +73,7 @@
 
             <!-- Dislike Section -->
             <div class="flex items-center gap-2 mt-2">
-              <p class="font-medium text-sm">2</p>
+              <p class="font-medium text-sm">0</p>
               <button class="focus:outline-none">
                 <img
                   src="../assets/dislike.png"
@@ -85,23 +85,60 @@
           </div>
         </div>
       </div>
-      <div class="bg-white rounded-lg shadow p-6 pb-4 mt-4">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">Comments</h2>
-        <h3></h3>
-        <div class="space-y-2 pl-4" th:each="comment : ${poll.comments}">
-          <p th:text="${comment.content}"></p>
+      <div class="bg-white rounded-lg shadow p-6 mt-6 mb-40">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Comments</h2>
+
+        <!-- Comments Container -->
+        <div class="space-y-6">
+          <!-- Loop through comments -->
+          <div
+            class="flex space-x-4 items-start"
+            th:each="comment : ${poll.comments}"
+          >
+            <!-- User Avatar -->
+            <div>
+              <img
+                src="../assets/user.png"
+                alt="User Avatar"
+                class="w-7 rounded-full object-cover"
+              />
+            </div>
+
+            <!-- Comment Content -->
+            <div class="flex-1">
+              <!-- User Name and Timestamp -->
+              <div class="flex justify-between items-center">
+                <p class="text-sm font-medium text-gray-900">
+                  <span th:text="${comment.owner}"></span>
+                </p>
+
+                <img
+                  src="../assets/delete.png"
+                  alt="Delete"
+                  th:name="${comment.id}"
+                  th:id="${poll.id}"
+                  class="w-4 rounded-full object-cover cursor-pointer delete-comment"
+                  th:if="${comment.isOwner}"
+                />
+              </div>
+
+              <!-- Comment Text -->
+              <p class="text-gray-700 mt-1" th:text="${comment.content}"></p>
+            </div>
+          </div>
+          <p class="comment-error text-sm text-red-600"></p>
         </div>
       </div>
     </div>
 
-    <div class="w-full py-8 mt-6 fixed bottom-0">
-      <div class="bg-white max-w-6xl mx-auto rounded-lg shadow p-6 pb-4">
+    <div class="w-full pt-8 mt-6 fixed bottom-0">
+      <div class="bg-gray-400 max-w-6xl mx-auto rounded-lg shadow p-6 pb-4">
         <form class="flex gap-8 w-full pr-6 comment-form">
           <input
             type="text"
             name="content"
             placeholder="Comment"
-            class="border-b border-gray-300 p-2 focus:outline-none flex-1"
+            class="border-b border-gray-300 p-2 focus:outline-none flex-1 bg-gray-200"
           />
           <input class="hidden" name="poll" th:value="${poll.id}" />
 
@@ -118,6 +155,7 @@
   // Select all elements with the class 'poll-choice'
   const choices = document.querySelectorAll('.poll-choice');
   const commentForm = document.querySelector('.comment-form');
+  const commentError = document.querySelector('.comment-error');
 
   // Iterate over each choice and attach a click event listener
   choices.forEach((choice) => {
@@ -150,6 +188,11 @@
     const content = commentFormData.get('content');
     const poll = commentFormData.get('poll');
 
+    if (content.trim().length == 0) {
+      commentError.textContent = 'Comment content is required';
+      return;
+    }
+
     const response = await fetch(`/polls/${poll}/comments`, {
       method: 'POST',
       headers: {
@@ -163,5 +206,23 @@
     if (response.status == 201) {
       window.location.reload();
     }
+  });
+
+  document.querySelectorAll('.delete-comment').forEach((deleteButton) => {
+    deleteButton.addEventListener('click', async (event) => {
+      const commentId = event.target.getAttribute('name');
+      const pollId = event.target.getAttribute('id');
+
+      const response = await fetch(`/polls/${pollId}/comments/${commentId}`, {
+        method: 'DELETE',
+      });
+      const data = await response.json();
+      console.log(data);
+      if (response.status == 200) {
+        window.location.reload();
+      } else {
+        commentError.textContent = data.error;
+      }
+    });
   });
 </script>

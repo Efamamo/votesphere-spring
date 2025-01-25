@@ -204,18 +204,19 @@ public class PollsPageController {
                 })
                 .collect(Collectors.toList());
 
-                List<Map<String, String>> comments = poll.getComments().stream()
+                List<Map<String, Object>> comments = poll.getComments().stream()
                 .map(comment -> {
                     
-                    Map<String, String> commentData = new HashMap<>();
+                    Map<String, Object> commentData = new HashMap<>();
                     commentData.put("content", comment.getContent());
+                    commentData.put("owner", comment.getUser().getUsername());
+                    commentData.put("isOwner", user.getId().equals(comment.getUser().getId()));
                     commentData.put("id", comment.getId().toString());
                     return commentData;
                 })
                 .collect(Collectors.toList());
             
            
-
 
                 pollData.put("choices", choiceContents);
                 pollData.put("comments", comments);

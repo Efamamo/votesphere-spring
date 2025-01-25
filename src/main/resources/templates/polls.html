@@ -75,7 +75,7 @@
               ></p>
 
               <div
-                class="w-full border border-grey-400 my-2 flex gap-2 rounded-e rounded-e-lg"
+                class="w-full border border-grey-400 my-2 flex flex-col gap-2 rounded-e rounded-e-lg"
               >
                 <div class="flex items-center gap-2 cursor-pointer p-2">
                   <input
@@ -84,7 +84,7 @@
                     th:id="${choice.id}"
                     th:value="${choice.content}"
                     th:checked="${choice.checked == 'yes'}"
-                    class="appearance-none w-5 h-5 border-2 border-blue-500 rounded-full checked:bg-blue-500 poll-choice cursor-pointer"
+                    class="appearance-none w-4 h-4 border-2 border-blue-500 rounded-full checked:bg-blue-500 poll-choice cursor-pointer"
                   />
 
                   <label
@@ -94,7 +94,7 @@
                   ></label>
                 </div>
                 <div
-                  class="bg-blue-600 h-content rounded-e rounded-e-lg"
+                  class="bg-blue-600 h-1 rounded-e rounded-e-lg"
                   th:style="'width: ' + (${choice.count} == 0 ? '0.2' : ${choice.count}) + '%;'"
                 ></div>
               </div>
@@ -117,7 +117,7 @@
 
             <div class="flex items-center gap-6 mr-2">
               <div class="flex items-center gap-2">
-                <p class="font-medium text-sm mt-2">10</p>
+                <p class="font-medium text-sm mt-2">0</p>
                 <button class="focus:outline-none">
                   <img
                     src="assets/like.png"
@@ -129,7 +129,7 @@
 
               <!-- Dislike Section -->
               <div class="flex items-center gap-2 mt-2">
-                <p class="font-medium text-sm">2</p>
+                <p class="font-medium text-sm">0</p>
                 <button class="focus:outline-none">
                   <img
                     src="assets/dislike.png"

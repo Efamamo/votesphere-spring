@@ -20,6 +20,10 @@ public class CommentService {
         return commentRepository.findByPoll(poll);
     }
 
+    public Comment getCommentById(Long id){
+        return commentRepository.findById(id).orElse(null);
+    }
+
     public Comment addComment(String content, Poll poll, User user){
         Comment comment = new Comment();
         comment.setContent(content);
@@ -28,6 +32,10 @@ public class CommentService {
 
         commentRepository.save(comment);
         return comment;
+    }
+
+    public void deleteComment(Comment comment){
+        commentRepository.delete(comment);
     }
 
     
