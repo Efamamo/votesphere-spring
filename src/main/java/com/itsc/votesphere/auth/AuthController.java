@@ -76,7 +76,7 @@ public class AuthController {
 
         response.put("message", "Signup successful");
         
-        EmailEvent emailEvent = new EmailEvent(this, user.getEmail(), "Your OTP: "+otp , "Email Verification");
+        EmailEvent emailEvent = new EmailEvent(this, user.getEmail(), "Your OTP: "+otp , "Email Verification", "ephrem.mamo@a2sv.org");
 
         applicationEventPublisher.publishEvent(emailEvent);
 
@@ -203,7 +203,7 @@ public class AuthController {
             user.setOtpExpirationDate(LocalDateTime.now().plusMinutes(10));
             userService.saveUser(user);
 
-            EmailEvent emailEvent = new EmailEvent(this, user.getEmail(), "Your OTP: "+otp , "Email Verification");
+            EmailEvent emailEvent = new EmailEvent(this, user.getEmail(), "Your OTP: "+otp , "Email Verification", "ephrem.mamo@a2sv.org");
             applicationEventPublisher.publishEvent(emailEvent);
 
             response.put("email", user.getEmail());

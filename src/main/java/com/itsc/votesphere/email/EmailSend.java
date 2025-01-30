@@ -10,10 +10,10 @@ public class EmailSend {
     @Autowired
     private JavaMailSender mailSender;
 
-    public void sendEmail(String to,String body, String subject){
+    public void sendEmail(String to,String body, String subject, String from){
 
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("ephrem.mamo@a2sv.org");
+        message.setFrom(from);
         message.setTo(to);
         message.setText(body);
         message.setSubject(subject);

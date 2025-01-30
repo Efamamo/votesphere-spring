@@ -109,25 +109,33 @@
       <div class="mt-40 mb-20 lg:flex items-center justify-center gap-20">
         <img class="lg:max-w-lg" src="assets/contact.png" alt="" />
         <div class="shadow-lg rounded-lg lg:w-1/3 px-2 md:px-11 pt-2 pb-4">
-          <form action="">
+          <form class="message-form">
             <h2 class="text-xl font-bold mb-4">Contact Us</h2>
             <input
               class="border w-full rounded-md border-inputBORDER px-2 py-2 my-2 outline-none"
               type="text"
               placeholder="Name"
+              name="name"
             />
+            <p class="name-error text-sm text-red-500"></p>
             <input
               class="border w-full rounded-md border-inputBORDER px-2 py-2 my-2 outline-none"
               type="email"
               placeholder="Email"
+              name="email"
             />
+            <p class="email-error text-sm text-red-500"></p>
+
             <textarea
               placeholder="Message"
               class="w-full h-32 p-2 border border-inputBorder rounded-md resize-none outline-none"
+              name="message"
             ></textarea>
+            <p class="message-error text-sm text-red-500"></p>
+            <p class="success text-sm text-green-500"></p>
 
             <button
-              class="font-medium bg-blue-700 text-white px-14 py-2 rounded-lg mt-4"
+              class="font-medium bg-blue-700 text-white px-14 py-2 rounded-lg mt-4 submit-btn"
             >
               Submit
             </button>
@@ -137,5 +145,68 @@
     </main>
 
     <footer th:replace="fragments/footer :: footer"></footer>
+
+    <script>
+      const messageForm = document.querySelector('.message-form');
+      const nameError = document.querySelector('.name-error');
+      const emailError = document.querySelector('.email-error');
+      const messageError = document.querySelector('.message-error');
+      const success = document.querySelector('.success');
+      const submitButton = document.querySelector('.submit-btn');
+
+      messageForm.addEventListener('submit', async (e) => {
+        nameError.textContent = '';
+        emailError.textContent = '';
+        messageError.textContent = '';
+
+        e.preventDefault();
+        const formData = new FormData(messageForm);
+        const name = formData.get('name');
+        const email = formData.get('email');
+        const message = formData.get('message');
+
+        if (name.trim().length == 0) {
+          nameError.textContent = 'Name is required';
+          return;
+        }
+
+        if (email.trim().length == 0) {
+          emailError.textContent = 'Email is required';
+          return;
+        }
+
+        if (message.trim().length == 0) {
+          messageError.textContent = 'Message is required';
+          return;
+        }
+
+        submitButton.textContent = 'Submitting ...';
+        submitButton.setAttribute('disabled', true);
+
+        const response = await fetch('/message', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            message,
+          }),
+        });
+
+        submitButton.textContent = 'Submit';
+        submitButton.setAttribute('disabled', false);
+
+        const data = await response.json();
+
+        if (response.status == 200) {
+          success.textContent = 'Email sent successfully';
+          messageForm.reset();
+        } else {
+          messageError.textContent = data.error;
+        }
+      });
+    </script>
   </body>
 </html>

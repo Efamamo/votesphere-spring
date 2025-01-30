@@ -5,36 +5,37 @@ import java.util.Set;
 import com.itsc.votesphere.users.User;
 import com.itsc.votesphere.polls.Poll;
 
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor 
+@NoArgsConstructor
 @Entity
 @Table(name = "`group`")
-
+@EqualsAndHashCode(onlyExplicitlyIncluded = true) // Avoid recursion issues in hashCode and equals
 public class Group {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include // Use ID for hashCode and equals
     private Long id;
 
     @NotBlank(message = "Group Name is required")
     @Column(nullable = false, unique = true)
     private String groupName;
 
-    @OneToOne
+    // A group can have one admin
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "admin_id", referencedColumnName = "id")
-    private User admin;  
+    private User admin;
 
-    @OneToMany(mappedBy = "group")
-    private Set<Poll> polls; 
+    // A group can have multiple polls
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
+    private Set<Poll> polls;
 
-    @OneToMany(mappedBy = "memberOf")
-    private Set<User> members; 
-
-   
+    // A group can have multiple members
+    @OneToMany(mappedBy = "memberOf", fetch = FetchType.LAZY)
+    private Set<User> members;
 }

@@ -12,7 +12,7 @@ public class EmailEventListener {
 
     @EventListener
     public void handleEmailEvent(EmailEvent event) {
-        emailService.sendEmail(event.getTo(), event.getBody(), event.getSubject());
+        emailService.sendEmail(event.getTo(), event.getBody(), event.getSubject(), event.getFrom());
     }
 }
 

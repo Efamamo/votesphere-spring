@@ -308,18 +308,20 @@
 
   document.querySelectorAll('.delete-comment').forEach((deleteButton) => {
     deleteButton.addEventListener('click', async (event) => {
-      const commentId = event.target.getAttribute('name');
-      const pollId = event.target.getAttribute('id');
+      if (confirm('Are you sure you want to delete this comment')) {
+        const commentId = event.target.getAttribute('name');
+        const pollId = event.target.getAttribute('id');
 
-      const response = await fetch(`/polls/${pollId}/comments/${commentId}`, {
-        method: 'DELETE',
-      });
-      const data = await response.json();
-      console.log(data);
-      if (response.status == 200) {
-        window.location.reload();
-      } else {
-        commentError.textContent = data.error;
+        const response = await fetch(`/polls/${pollId}/comments/${commentId}`, {
+          method: 'DELETE',
+        });
+        const data = await response.json();
+
+        if (response.status == 200) {
+          window.location.reload();
+        } else {
+          commentError.textContent = data.error;
+        }
       }
     });
   });

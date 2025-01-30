@@ -14,24 +14,27 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor 
+@NoArgsConstructor
 @Entity
+@EqualsAndHashCode(onlyExplicitlyIncluded = true) // Avoid recursion issues in hashCode and equals
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include // Use ID for hashCode and equals
     private Long id;
 
     @NotBlank(message = "Username is required")
-    @Column(nullable = false, unique = true) // Added constraints
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Email(message = "Email should be valid")
     @NotBlank(message = "Email is required")
-    @Column(nullable = false, unique = true) // Added constraints
+    @Column(nullable = false, unique = true)
     private String email;
 
     @NotBlank(message = "Password is required")
@@ -46,16 +49,20 @@ public class User {
 
     private LocalDateTime otpExpirationDate;
 
-    @OneToOne(mappedBy = "admin")
-    private Group group; 
+    // A user can be an admin of one group
+    @OneToOne(mappedBy = "admin", fetch = FetchType.LAZY)
+    private Group group;
 
-    @ManyToOne
+    // A user can be a member of one group
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id", referencedColumnName = "id")
-    private Group memberOf; 
+    private Group memberOf;
 
-    @OneToMany(mappedBy = "pollOwner")
-    private Set<Poll> polls;  
+    // A user can create multiple polls
+    @OneToMany(mappedBy = "pollOwner", fetch = FetchType.LAZY)
+    private Set<Poll> polls;
 
-    @OneToMany(mappedBy = "user")
+    // A user can cast multiple votes
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Vote> votes;
 }
