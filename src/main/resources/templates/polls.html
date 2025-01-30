@@ -117,25 +117,43 @@
 
             <div class="flex items-center gap-6 mr-2">
               <div class="flex items-center gap-2">
-                <p class="font-medium text-sm mt-2">0</p>
-                <button class="focus:outline-none">
-                  <img
-                    src="assets/like.png"
-                    alt="Like"
-                    class="w-5 hover:scale-110 transition-transform"
-                  />
+                <p
+                  th:text="${poll.likes}"
+                  class="font-medium text-blue-600"
+                ></p>
+                <button th:if="${poll.userLiked}" th:attr="data-id=${poll.id}">
+                  <i
+                    th:attr="data-id=${poll.id}"
+                    class="fas fa-thumbs-up unlike_btn"
+                    style="color: blue"
+                  ></i>
+                </button>
+                <button th:if="${!poll.userLiked}">
+                  <i
+                    th:attr="data-id=${poll.id}"
+                    class="far fa-thumbs-up like_btn"
+                  ></i>
                 </button>
               </div>
 
               <!-- Dislike Section -->
               <div class="flex items-center gap-2 mt-2">
-                <p class="font-medium text-sm">0</p>
-                <button class="focus:outline-none">
-                  <img
-                    src="assets/dislike.png"
-                    alt="Dislike"
-                    class="w-5 hover:scale-110 transition-transform pt-2.5"
-                  />
+                <p
+                  th:text="${poll.dislikes}"
+                  class="font-medium text-blue-600 mb-2"
+                ></p>
+                <button th:if="${poll.userDisliked}">
+                  <i
+                    th:attr="data-id=${poll.id}"
+                    class="fas fa-thumbs-down undislike_btn"
+                    style="color: red"
+                  ></i>
+                </button>
+                <button th:if="${!poll.userDisliked}">
+                  <i
+                    th:attr="data-id=${poll.id}"
+                    class="far fa-thumbs-down dislike_btn"
+                  ></i>
                 </button>
               </div>
             </div>
@@ -150,6 +168,79 @@
   // Select all elements with the class 'poll-choice'
   const choices = document.querySelectorAll('.poll-choice');
   const toSingle = document.querySelectorAll('.to-single');
+  const like_buttons = document.querySelectorAll('.like_btn');
+  const unlike_buttons = document.querySelectorAll('.unlike_btn');
+  const dislike_buttons = document.querySelectorAll('.dislike_btn');
+  const undislike_buttons = document.querySelectorAll('.undislike_btn');
+
+  like_buttons.forEach((button) => {
+    button.addEventListener('click', async () => {
+      try {
+        const pollId = button.getAttribute('data-id');
+        const response = await fetch(`/polls/${pollId}/like`, {
+          method: 'PATCH',
+        });
+        const data = await response.json();
+        if (response.status == 200) {
+          window.location.reload();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    });
+  });
+
+  unlike_buttons.forEach((button) => {
+    button.addEventListener('click', async () => {
+      try {
+        const pollId = button.getAttribute('data-id');
+        const response = await fetch(`/polls/${pollId}/unlike`, {
+          method: 'PATCH',
+        });
+        const data = await response.json();
+        if (response.status == 200) {
+          window.location.reload();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    });
+  });
+
+  dislike_buttons.forEach((button) => {
+    button.addEventListener('click', async () => {
+      try {
+        const pollId = button.getAttribute('data-id');
+        const response = await fetch(`/polls/${pollId}/dislike`, {
+          method: 'PATCH',
+        });
+        const data = await response.json();
+        console.log(data);
+        if (response.status == 200) {
+          window.location.reload();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    });
+  });
+
+  undislike_buttons.forEach((button) => {
+    button.addEventListener('click', async () => {
+      try {
+        const pollId = button.getAttribute('data-id');
+        const response = await fetch(`/polls/${pollId}/undislike`, {
+          method: 'PATCH',
+        });
+        const data = await response.json();
+        if (response.status == 200) {
+          window.location.reload();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    });
+  });
 
   // Iterate over each choice and attach a click event listener
   choices.forEach((choice) => {

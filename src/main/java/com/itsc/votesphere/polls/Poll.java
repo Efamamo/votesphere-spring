@@ -3,7 +3,9 @@ package com.itsc.votesphere.polls;
 import java.util.List;
 
 import com.itsc.votesphere.comments.Comment;
+import com.itsc.votesphere.dislikes.Dislike;
 import com.itsc.votesphere.group.Group;
+import com.itsc.votesphere.likes.Like;
 import com.itsc.votesphere.users.User;
 
 import jakarta.persistence.CascadeType;
@@ -42,4 +44,10 @@ public class Poll {
 
     @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
+
+    @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Like> likes;
+
+    @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Dislike> dislikes;
 }

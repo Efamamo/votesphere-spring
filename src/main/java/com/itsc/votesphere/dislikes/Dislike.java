@@ -1,5 +1,4 @@
-package com.itsc.votesphere.comments;
-
+package com.itsc.votesphere.dislikes;
 import com.itsc.votesphere.polls.Poll;
 import com.itsc.votesphere.users.User;
 
@@ -15,12 +14,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Comment {
+public class Dislike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String content;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

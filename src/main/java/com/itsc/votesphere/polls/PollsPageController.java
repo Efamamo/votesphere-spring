@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.itsc.votesphere.users.UserService;
+import com.itsc.votesphere.dislikes.Dislike;
 import com.itsc.votesphere.group.Group;
+import com.itsc.votesphere.likes.Like;
 import com.itsc.votesphere.users.User;
 
 
@@ -68,9 +70,26 @@ public class PollsPageController {
         .filter(poll -> poll.getGroup().equals(user.getMemberOf()))
         .map(poll -> {
             Map<String, Object> pollData = new HashMap<>();
+
+            Boolean userLiked = false;
+            Boolean userDisliked = false;
+            for (Like like: poll.getLikes()){
+                if(like.getUser().getId().equals(user.getId()) ){
+                    userLiked = true;
+                }
+            }
+
+            for (Dislike dislike: poll.getDislikes()){
+                if(dislike.getUser().getId().equals(user.getId()) ){
+                    userDisliked = true;
+                }
+            }
+            System.out.println(userLiked);
             pollData.put("id", poll.getId());
             pollData.put("question", poll.getQuestion());
             pollData.put("comments", poll.getComments().size());
+            pollData.put("userLiked", userLiked);
+            pollData.put("userDisliked", userDisliked);
     
             // Calculate the total votes for the poll
             final int total = poll.getChoices().stream()
@@ -86,12 +105,12 @@ public class PollsPageController {
             
 
 
-            for (Vote vote: user.getVotes()){
-                if (vote.getPoll() == poll){
-                    userVote = vote.getChoice();
-                    break;
-                }
-            }
+                    for (Vote vote: user.getVotes()){
+                        if (vote.getPoll() == poll){
+                            userVote = vote.getChoice();
+                            break;
+                        }
+                    }
 
 
             
@@ -112,6 +131,8 @@ public class PollsPageController {
 
                 pollData.put("choices", choiceContents);
                 pollData.put("total", total == 0 ? 1 : total);
+                pollData.put("likes", poll.getLikes().size());
+                pollData.put("dislikes", poll.getDislikes().size());
             return pollData;
         })
         .collect(Collectors.toList());
@@ -164,8 +185,26 @@ public class PollsPageController {
         }
 
         Map<String, Object> pollData = new HashMap<>();
+            Boolean userLiked = false;
+            Boolean userDisliked = false;
+            for (Like like: poll.getLikes()){
+                if(like.getUser().getId().equals(user.getId()) ){
+                    userLiked = true;
+                }
+            }
+
+            for (Dislike dislike: poll.getDislikes()){
+                if(dislike.getUser().getId().equals(user.getId()) ){
+                    userDisliked = true;
+                }
+            }
+
             pollData.put("id", poll.getId());
             pollData.put("question", poll.getQuestion());
+            pollData.put("userLiked", userLiked);
+            pollData.put("userDisliked", userDisliked);
+
+            
     
             // Calculate the total votes for the poll
             final int total = poll.getChoices().stream()
@@ -178,15 +217,14 @@ public class PollsPageController {
                 .map(choice -> {
                      Choice userVote = null;
 
-            
+                    for (Vote vote: user.getVotes()){
+                        if (vote.getPoll() == poll){
+                            userVote = vote.getChoice();
+                            break;
+                        }
+                    }
 
-
-            for (Vote vote: user.getVotes()){
-                if (vote.getPoll() == poll){
-                    userVote = vote.getChoice();
-                    break;
-                }
-            }
+                   
 
 
             
@@ -221,6 +259,8 @@ public class PollsPageController {
                 pollData.put("choices", choiceContents);
                 pollData.put("comments", comments);
                 pollData.put("total", total == 0 ? 1 : total);
+                pollData.put("likes", poll.getLikes().size());
+                pollData.put("dislikes", poll.getDislikes().size());
 
                 model.addAttribute("isAdmin", user.getIsAdmin());
                 model.addAttribute("hasGroup", true);

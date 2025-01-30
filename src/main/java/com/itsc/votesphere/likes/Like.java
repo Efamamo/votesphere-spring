@@ -1,5 +1,4 @@
-package com.itsc.votesphere.comments;
-
+package com.itsc.votesphere.likes;
 import com.itsc.votesphere.polls.Poll;
 import com.itsc.votesphere.users.User;
 
@@ -9,18 +8,19 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Comment {
+@Table(name = "`like`")
+
+public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String content;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

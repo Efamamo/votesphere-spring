@@ -40,10 +40,11 @@
             th:href="@{/groups/members/{id}(id=${member.id})}"
             th:if="${isAdmin} and ${currentUser != member.id}"
             onclick="return confirm('Are you sure you want to remove this user?');"
-            class="text-red-500"
+            class="text-red-500 font-semibold"
           >
-            Delete
+            Remove
           </a>
+          <p class="text-gray-400" th:if="${member.id == admin}">Admin</p>
         </li>
       </ul>
     </div>

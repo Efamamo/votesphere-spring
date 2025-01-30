@@ -11,22 +11,60 @@
     </div>
   </a>
 
-  <div class="flex items-center gap-5 mt-4">
-    <a
-      class="text-gray-50 hover:text-yellow-500 flex gap-1 items-center flex-col max-w-content"
-      href="/groups/members"
-      th:if="${hasGroup}"
-      id="nav-about"
-    >
-      <img class="w-7" src="../../assets/group.png" alt="" />
-      <div class="text-sm">Group</div>
-    </a>
+  <div class="flex items-center gap-5 mt-4 relative">
+    <!-- User Image -->
+    <img
+      class="w-7 cursor-pointer"
+      src="../../assets/user.png"
+      alt="User"
+      id="userImage"
+    />
+
     <div
-      onclick="fetch('/auth/logout', {method: 'DELETE', credentials: 'include'}).then(() => window.location.href = '/auth/login')"
-      class="text-gray-50 hover:text-red-500 flex gap-1 items-center flex-col max-w-content cursor-pointer"
+      id="menu"
+      class="absolute bg-white shadow rounded-lg p-2 mt-2 hidden"
+      style="top: 100%; left: 0"
     >
-      <img class="w-7" src="../../assets/logout.png" alt="" />
-      <div class="text-sm">Logout</div>
+      <ul class="space-y-2">
+        <a href="#"
+          ><li class="cursor-pointer hover:bg-gray-100 px-4 py-2">
+            Profile
+          </li></a
+        >
+        <a href="#"
+          ><li class="cursor-pointer hover:bg-gray-100 px-4 py-2">
+            Settings
+          </li></a
+        >
+        <a href="/groups/members"
+          ><li class="cursor-pointer hover:bg-gray-100 px-4 py-2">Groups</li></a
+        >
+        <li
+          onclick="fetch('/auth/logout', {method: 'DELETE', credentials: 'include'}).then(() => window.location.href = '/auth/login')"
+          class="cursor-pointer hover:bg-gray-100 px-4 py-2"
+        >
+          Logout
+        </li>
+      </ul>
     </div>
   </div>
+
+  <script>
+    const userImage = document.getElementById('userImage');
+    const menu = document.getElementById('menu');
+
+    userImage.addEventListener('click', () => {
+      if (menu.classList.contains('hidden')) {
+        menu.classList.remove('hidden');
+      } else {
+        menu.classList.add('hidden');
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!userImage.contains(event.target) && !menu.contains(event.target)) {
+        menu.classList.add('hidden');
+      }
+    });
+  </script>
 </nav>

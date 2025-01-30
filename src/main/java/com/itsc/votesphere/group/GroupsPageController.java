@@ -134,6 +134,7 @@ public class GroupsPageController {
         model.addAttribute("isAdmin", user.getIsAdmin());
         model.addAttribute("groupName", g.getGroupName());
         model.addAttribute("currentUser", user.getId());
+        model.addAttribute("admin", g.getAdmin().getId());
 
 
 
