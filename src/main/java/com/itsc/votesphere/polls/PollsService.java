@@ -1,6 +1,7 @@
 package com.itsc.votesphere.polls;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -51,6 +52,13 @@ public class PollsService {
 
     public Poll findPollById(Long id) {
         return pollRepository.findById(id).orElse(null);
+    }
+
+    public List<Poll> findAll(){
+        return pollRepository.findAll();
+    }
+    public void deletePoll(Poll poll){
+        pollRepository.delete(poll);
     }
     
     

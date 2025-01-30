@@ -7,8 +7,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,13 +31,12 @@ import jakarta.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("/polls")
 public class PollsPageController {
-    
-
-    @Autowired
-    private PollRepository pollRepository;
 
      @Autowired
     private UserService userService ;
+
+    @Autowired
+    private PollsService pollsService;
 
 
     @GetMapping("")
@@ -65,7 +67,7 @@ public class PollsPageController {
 
         
 
-        List<Map<String, Object>> pollsData = pollRepository.findAll()
+        List<Map<String, Object>> pollsData = pollsService.findAll()
         .stream()
         .filter(poll -> poll.getGroup().equals(user.getMemberOf()))
         .map(poll -> {
@@ -177,7 +179,7 @@ public class PollsPageController {
         }
 
 
-        Poll poll = pollRepository.findById(id).orElse(null);
+        Poll poll = pollsService.findPollById(id);
 
         if (poll == null){
             response.sendRedirect("/polls");  
@@ -303,5 +305,8 @@ public class PollsPageController {
 
         return  "add_poll";
     }
+
+
+    
 }
 

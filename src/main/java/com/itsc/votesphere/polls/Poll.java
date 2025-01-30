@@ -49,5 +49,8 @@ public class Poll {
     private List<Like> likes;
 
     @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Vote> votes;
+
+    @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Dislike> dislikes;
 }
